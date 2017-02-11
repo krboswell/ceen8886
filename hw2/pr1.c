@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "hw1.h"
+#include "hw2.h"
 
 void usage(FILE *out, char *pname);
 

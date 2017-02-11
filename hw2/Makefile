@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-I. -g -O2
-OBJS=hw1.o pr1.o
+OBJS=hw2.o pr1.o
 
 %.o: %.c
 	$(CC) -c -o $@ $< $(CFLAGS)
