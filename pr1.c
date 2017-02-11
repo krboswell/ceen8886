@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "hw1.h"
+
 void usage(FILE *out, char *pname);
 
 int copy_key(unsigned char *key, char *arg);
@@ -60,13 +62,34 @@ void key_schedule(unsigned char *key, unsigned int *w) {
             | (key[4 * i + 1] << 16)
             | (key[4 * i + 2] << 8)
             | key[4 * i + 3];
+        fprintf(stdout, "w[%u]=%04x\n", i, w[i]);
     }
 
+#if 0
     for (i = 4; i < 44; ++i) {
         temp = w[i - 1];
         if ((i % 4) == 0) {
             temp = sub_word(rot_word(temp)) ^ r_con[i/4];
         }
         w[i] = w[i - 4] ^ temp;
+    }
+#endif
+}
+
+unsigned int sub_word(unsigned int w) {
+    unsigned int row, col;
+
+    row = (0xff00 & w) >> 16;
+    col = (0x00ff & w);
+
+    return S_BOX[col][row];
+}
+
+unsigned int rot_word(unsigned int w) {
+    unsigned char tmp, *cptr;
+    int i;
+
+    cptr = (unsigned char *) &w;
+    for (i = 1; i < 4; ++i) {
     }
 }
