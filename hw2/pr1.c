@@ -7,7 +7,8 @@
 void usage(FILE *out, char *pname);
 
 int copy_key(unsigned char *key, char *arg);
-void key_schedule(unsigned char *key, unsigned int *w);
+void generate_round_keys(unsigned char *key, unsigned int *w);
+void print_round_keys(unsigned int *w);
 
 unsigned int sub_word(unsigned int w);
 unsigned int rot_word(unsigned int w);
@@ -27,8 +28,8 @@ int main(int argc, char **argv) {
     }
 
     if (status == 0) {
-        fprintf(stdout, "Copied key: \"%s\"\n", key);
-        key_schedule(key, w);
+        generate_round_keys(key, w);
+        print_round_keys(w);
     }
 }
 
@@ -53,43 +54,77 @@ int copy_key(unsigned char *key, char *arg) {
     return status;
 }
 
-void key_schedule(unsigned char *key, unsigned int *w) {
+void generate_round_keys(unsigned char *key, unsigned int *w) {
     int i;
-    unsigned int temp;
+    unsigned int temp, gw, rcon;
 
     for (i = 0; i < 4; ++i) {
         w[i] = (key[4 * i] << 24)
             | (key[4 * i + 1] << 16)
             | (key[4 * i + 2] << 8)
             | key[4 * i + 3];
-        fprintf(stdout, "w[%u]=%04x\n", i, w[i]);
     }
 
-#if 0
     for (i = 4; i < 44; ++i) {
         temp = w[i - 1];
         if ((i % 4) == 0) {
-            temp = sub_word(rot_word(temp)) ^ r_con[i/4];
+            gw = sub_word(rot_word(temp));
+            rcon = RCON[i/4] << 24;
+            temp = gw ^ rcon;
         }
         w[i] = w[i - 4] ^ temp;
     }
-#endif
+}
+
+void print_round_keys(unsigned int *w) {
+    int i, j, round, index;
+
+    round = 0;
+    index = 0;
+    for (i = 0; i < 11; ++i) {
+        fprintf(stdout, "round = %-2d: ", round);
+        for (j = 0; j < 4; ++j) {
+            fprintf(stdout, "%08x ", w[index]);
+            ++index;
+        }
+        fprintf(stdout, "\n");
+        ++round;
+    }
 }
 
 unsigned int sub_word(unsigned int w) {
+    unsigned int retval;
     unsigned int row, col;
+    unsigned char *cptr;
+    int i;
 
-    row = (0xff00 & w) >> 16;
-    col = (0x00ff & w);
+    retval = w;
+    cptr = (unsigned char *) &retval;
 
-    return S_BOX[col][row];
+    for (i = 0; i < 4; ++i) { 
+        row = (0xf0 & cptr[i]) >> 4;
+        col = (0x0f & cptr[i]);
+        cptr[i] = S_BOX[row][col];
+    }
+
+    return retval;
 }
 
 unsigned int rot_word(unsigned int w) {
+    unsigned retval;
     unsigned char tmp, *cptr;
     int i;
 
-    cptr = (unsigned char *) &w;
-    for (i = 1; i < 4; ++i) {
-    }
+    retval = w;
+
+    cptr = (unsigned char *) &retval;
+    i = 3;
+
+    tmp = cptr[3];
+    for (i = 3; i > 0; --i) {
+        cptr[i] = cptr[i - 1];
+    };
+    cptr[0] = tmp;
+
+    return retval;
 }
