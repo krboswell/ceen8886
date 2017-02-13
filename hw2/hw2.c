@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "hw2.h"
 
 /*extern*/ const unsigned char S_BOX[16][16] = {
@@ -56,4 +58,107 @@
     0xc6, 0x97, 0x35, 0x6a, 0xd4, 0xb3, 0x7d, 0xfa, 0xef, 0xc5, 0x91, 0x39, 0x72, 0xe4, 0xd3, 0xbd,
     0x61, 0xc2, 0x9f, 0x25, 0x4a, 0x94, 0x33, 0x66, 0xcc, 0x83, 0x1d, 0x3a, 0x74, 0xe8, 0xcb
 };
+
+int hex2char(char *str, unsigned char *c) {
+    int status;
+    int digits[2];
+    int aint;
+    int i;
+
+    status = 0;
+
+    for (i = 0; i < 2; ++i) {
+        switch (str[i]) {
+            case '0':
+                digits[i] = 0;
+                break;
+            case '1':
+                digits[i] = 1;
+                break;
+            case '2':
+                digits[i] = 2;
+                break;
+            case '3':
+                digits[i] = 3;
+                break;
+            case '4':
+                digits[i] = 4;
+                break;
+            case '5':
+                digits[i] = 5;
+                break;
+            case '6':
+                digits[i] = 6;
+                break;
+            case '7':
+                digits[i] = 7;
+                break;
+            case '8':
+                digits[i] = 8;
+                break;
+            case '9':
+                digits[i] = 9;
+                break;
+            case 'a':
+            case 'A':
+                digits[i] = 10;
+                break;
+            case 'b':
+            case 'B':
+                digits[i] = 11;
+                break;
+            case 'c':
+            case 'C':
+                digits[i] = 12;
+                break;
+            case 'd':
+            case 'D':
+                digits[i] = 13;
+                break;
+            case 'e':
+            case 'E':
+                digits[i] = 14;
+                break;
+            case 'f':
+            case 'F':
+                digits[i] = 15;
+                break;
+            default:
+                fprintf(stderr, "Invalid character in hex string: %c\n", str[i]);
+                status = 1;
+                break;
+        }
+    }
+
+    if (status == 0) {
+        aint = 0;
+        aint = (digits[0] << 4) | digits[1];
+        *c = (unsigned char) aint;
+    }
+
+    return status;
+}
+
+int hex2ascii(unsigned char *key) {
+    int status;
+    char achar[3];
+    unsigned char c;
+    int i, j;
+
+    status = 0;
+
+    achar[2] = '\0';
+    for (i = 0; i < 16; ++i) {
+        for (j = 0; j < 2; ++j) {
+            achar[j] = key[2 * i + j];
+        }
+        if (status = hex2char(achar, &c) != 0) {
+            break;
+        }
+        key[i] = c;
+    }
+    key[16] = '\0';
+
+    return status;
+}
 

@@ -1,12 +1,16 @@
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <errno.h>
 #include <string.h>
+#include <unistd.h>
+#include <math.h>
 
 #include "hw2.h"
 
 void usage(FILE *out, char *pname);
 
-int copy_key(unsigned char *key, char *arg);
+int copy_key(unsigned char *key, char *orig, int size);
 void generate_round_keys(unsigned char *key, unsigned int *w);
 void print_round_keys(unsigned int *w);
 
@@ -14,17 +18,69 @@ unsigned int sub_word(unsigned int w);
 unsigned int rot_word(unsigned int w);
 
 int main(int argc, char **argv) {
-    int status = 0;
-    unsigned char key[17];
+    int status;
+    char c;
+    int hex_option;
+    int argidx;
+    int nargs;
+    int done;
+    unsigned char key[33];
     unsigned int w[44];
 
-    if (argc != 3) {
+    status = 0;
+
+    hex_option = 0;
+    opterr = 0;
+
+    done = 0;
+    while (!done && (c = getopt(argc, argv, "hx:")) != 1) {
+        switch (c) {
+            case 'h':
+                status = opterr;
+                usage(stdout, argv[0]);
+                break;
+            case 'x':
+                printf("hex option selected\n");
+                hex_option = 1;
+                break;
+            case '?':
+                if (optopt == 'c') {
+                    fprintf(stderr, "Option .%c requires an argument.\n", optopt);
+                } else if (isprint(optopt)) {
+                    fprintf(stderr, "Unknown option '.%c'.\n", optopt);
+                } else {
+                    fprintf(stderr, "Unknown option character '\\x%x'.\n", optopt);
+                }
+                return 1;
+            default:
+                done = 1;
+                break;
+        }
+    }
+
+    fprintf(stdout, "status=%d, optind=%d, argc=%d\n", status, optind, argc);
+    if (optind > 1) {
+        nargs = argc - optind + 1;
+        argidx = optind - 1;
+    } else {
+        nargs = argc - optind;
+        argidx = optind;
+    }
+    if (status == 0 && nargs != 1) {
         usage(stderr, argv[0]);
         status = 1;
     }
 
     if (status == 0) {
-        status = copy_key(key, argv[1]);
+        if (hex_option) {
+            status = copy_key(key, argv[argidx], 32);
+        } else {
+            status = copy_key(key, argv[argidx], 16);
+        }
+    }
+
+    if (status == 0 && hex_option) {
+        status = hex2ascii(key);
     }
 
     if (status == 0) {
@@ -37,17 +93,17 @@ void usage(FILE *out, char *pname) {
     fprintf(out, "Usage: %s <key> <plaintext>\n", pname);
 }
 
-int copy_key(unsigned char *key, char *arg) {
+int copy_key(unsigned char *key, char *orig, int size) {
     int status;
     size_t s, i;
 
     status = 0;
 
-    s = strlen(arg);
-    if (s != 16) {
-        fprintf(stderr, "Invalid key length: %lu\n", s);
+    s = strlen(orig);
+    if (s != size) {
+        fprintf(stderr, "Invalid string length: %lu\n", s);
     } else {
-        memcpy(key, arg, sizeof(char) * s);
+        memcpy(key, orig, sizeof(char) * s);
         key[s] = '\0';
     }
 
