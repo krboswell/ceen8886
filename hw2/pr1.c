@@ -15,6 +15,8 @@ void generate_round_keys(unsigned char *key, unsigned int *w);
 void print_round_keys(unsigned int *w);
 
 unsigned int sub_word(unsigned int w);
+void sub_bytes(unsigned int *state);
+unsigned int sub_byte(unsigned char byte);
 unsigned int rot_word(unsigned int w);
 
 void add_round_key(unsigned int *state, unsigned int *w);
@@ -110,6 +112,11 @@ int main(int argc, char **argv) {
         printf("State 1:\n");
         print_state(state);
         printf("\n");
+
+        sub_bytes(state);
+        printf("State 1:\n");
+        print_state(state);
+        printf("\n");
     }
 }
 
@@ -192,6 +199,24 @@ unsigned int sub_word(unsigned int w) {
     }
 
     return retval;
+}
+
+void sub_bytes(unsigned int *state) {
+    int i;
+    unsigned char *bytes;
+
+    bytes = (unsigned char *) state;
+
+    for (i = 0; i < 16; ++i) {
+        bytes[i] = sub_byte(bytes[i]);
+    }
+}
+
+unsigned int sub_byte(unsigned char byte) {
+    unsigned int row, col;
+    row = (0xf0 & byte) >> 4;
+    col = (0x0f & byte);
+    return S_BOX[row][col];
 }
 
 unsigned int rot_word(unsigned int w) {
