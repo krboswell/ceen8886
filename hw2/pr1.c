@@ -25,76 +25,30 @@ void print_state(unsigned int *state);
 
 int main(int argc, char **argv) {
     int status;
-    char c;
-    int hex_option;
-    int argidx;
-    int nargs;
-    int done;
     unsigned char key[33];
     unsigned int w[44];
     unsigned int state[4];
 
     status = 0;
 
-    hex_option = 0;
-    opterr = 0;
-
-    done = 0;
-    while (!done && (c = getopt(argc, argv, "hx:")) != 1) {
-        switch (c) {
-            case 'h':
-                status = opterr;
-                usage(stdout, argv[0]);
-                break;
-            case 'x':
-                printf("hex option selected\n");
-                hex_option = 1;
-                break;
-            case '?':
-                if (optopt == 'c') {
-                    fprintf(stderr, "Option .%c requires an argument.\n", optopt);
-                } else if (isprint(optopt)) {
-                    fprintf(stderr, "Unknown option '.%c'.\n", optopt);
-                } else {
-                    fprintf(stderr, "Unknown option character '\\x%x'.\n", optopt);
-                }
-                return 1;
-            default:
-                done = 1;
-                break;
-        }
-    }
-
-    fprintf(stdout, "status=%d, optind=%d, argc=%d\n", status, optind, argc);
-    if (optind > 1) {
-        nargs = argc - optind + 1;
-        argidx = optind - 1;
-    } else {
-        nargs = argc - optind;
-        argidx = optind;
-    }
-    if (status == 0 && nargs != 2) {
+    if (argc != 3) {
         usage(stderr, argv[0]);
         status = 1;
     }
 
     if (status == 0) {
-        if (hex_option) {
-            status = copy_key(key, argv[argidx], 32);
-        } else {
-            status = copy_key(key, argv[argidx], 16);
-        }
+        status = copy_key(key, argv[1], 32);
     }
 
     if (status == 0) {
-        status = copy_key((unsigned char *) state, argv[argidx + 1], 32);
+        status = copy_key((unsigned char *) state, argv[2], 32);
     }
 
     if (status == 0) {
         status = hex2ascii((unsigned char *) state);
     }
 
-    if (status == 0 && hex_option) {
+    if (status == 0) {
         status = hex2ascii(key);
     }
 
