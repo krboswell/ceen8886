@@ -104,17 +104,17 @@ int main(int argc, char **argv) {
         print_round_keys(w);
         printf("\n");
 
-        printf("State 0:\n");
+        printf("Initial State:\n");
         print_state(state);
         printf("\n");
 
         add_round_key(state, &w[0]);
-        printf("State 1:\n");
+        printf("State after AddRoundKey:\n");
         print_state(state);
         printf("\n");
 
         sub_bytes(state);
-        printf("State 1:\n");
+        printf("State after SubBytes:\n");
         print_state(state);
         printf("\n");
     }
