@@ -18,6 +18,7 @@ unsigned int sub_word(unsigned int w);
 void sub_bytes(unsigned int *state);
 unsigned int sub_byte(unsigned char byte);
 unsigned int rot_word(unsigned int w);
+void shift_rows(unsigned int *state);
 
 void add_round_key(unsigned int *state, unsigned int *w);
 void print_state(unsigned int *state);
@@ -115,6 +116,11 @@ int main(int argc, char **argv) {
 
         sub_bytes(state);
         printf("State after SubBytes:\n");
+        print_state(state);
+        printf("\n");
+
+        shift_rows(state);
+        printf("State after ShiftRows:\n");
         print_state(state);
         printf("\n");
     }
@@ -236,6 +242,33 @@ unsigned int rot_word(unsigned int w) {
     cptr[0] = tmp;
 
     return retval;
+}
+
+void shift_rows(unsigned int *state) {
+    unsigned int tmp, tmp2, tmp3;
+    unsigned char *bytes;
+
+    bytes = (unsigned char *) state;
+    tmp = bytes[1];
+    bytes[1] = bytes[5];
+    bytes[5] = bytes[9];
+    bytes[9] = bytes[13];
+    bytes[13] = tmp;
+
+    tmp = bytes[2];
+    tmp2 = bytes[6];
+    bytes[2] = bytes[10];
+    bytes[6] = bytes[14];
+    bytes[10] = tmp;
+    bytes[14] = tmp2;
+
+    tmp = bytes[3];
+    tmp2 = bytes[7];
+    tmp3 = bytes[11];
+    bytes[3] = bytes[15];
+    bytes[7] = tmp;
+    bytes[11] = tmp2;
+    bytes[15] = tmp3;
 }
 
 void add_round_key(unsigned int *state, unsigned int *w) {
