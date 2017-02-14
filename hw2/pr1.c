@@ -17,6 +17,9 @@ void print_round_keys(unsigned int *w);
 unsigned int sub_word(unsigned int w);
 unsigned int rot_word(unsigned int w);
 
+void add_round_key(unsigned int *state, unsigned int *w);
+void print_state(unsigned int *state);
+
 int main(int argc, char **argv) {
     int status;
     char c;
@@ -26,6 +29,7 @@ int main(int argc, char **argv) {
     int done;
     unsigned char key[33];
     unsigned int w[44];
+    unsigned int state[4];
 
     status = 0;
 
@@ -66,7 +70,7 @@ int main(int argc, char **argv) {
         nargs = argc - optind;
         argidx = optind;
     }
-    if (status == 0 && nargs != 1) {
+    if (status == 0 && nargs != 2) {
         usage(stderr, argv[0]);
         status = 1;
     }
@@ -79,13 +83,33 @@ int main(int argc, char **argv) {
         }
     }
 
+    if (status == 0) {
+        status = copy_key((unsigned char *) state, argv[argidx + 1], 32);
+    }
+
+    if (status == 0) {
+        status = hex2ascii((unsigned char *) state);
+    }
+
     if (status == 0 && hex_option) {
         status = hex2ascii(key);
     }
 
     if (status == 0) {
         generate_round_keys(key, w);
+
+        printf("Round keys:\n");
         print_round_keys(w);
+        printf("\n");
+
+        printf("State 0:\n");
+        print_state(state);
+        printf("\n");
+
+        add_round_key(state, &w[0]);
+        printf("State 1:\n");
+        print_state(state);
+        printf("\n");
     }
 }
 
@@ -140,7 +164,11 @@ void print_round_keys(unsigned int *w) {
     for (i = 0; i < 11; ++i) {
         fprintf(stdout, "round = %-2d: ", round);
         for (j = 0; j < 4; ++j) {
-            fprintf(stdout, "%08x ", w[index]);
+            fprintf(stdout, "%02x ", (w[index] & 0xff000000) >> 24);
+            fprintf(stdout, "%02x ", (w[index] & 0x00ff0000) >> 16);
+            fprintf(stdout, "%02x ", (w[index] & 0x0000ff00) >> 8);
+            fprintf(stdout, "%02x ", (w[index] & 0x000000ff));
+
             ++index;
         }
         fprintf(stdout, "\n");
@@ -184,3 +212,60 @@ unsigned int rot_word(unsigned int w) {
 
     return retval;
 }
+
+void add_round_key(unsigned int *state, unsigned int *w) {
+    int i, j;
+    unsigned char *state_row;
+    unsigned char w_val;
+
+    static unsigned int mask[4] = {
+        0xff000000,
+        0x00ff0000,
+        0x0000ff00,
+        0x000000ff
+    };
+
+    static unsigned int shift[4] = {
+        24,
+        16,
+        8,
+        0
+    };
+
+    for (i = 0; i < 4; ++i) {
+        state_row = (unsigned char *) &state[i];
+        for (j = 0; j < 4; ++j) {
+            w_val = (unsigned char)((w[i] & mask[j]) >> shift[j]);
+            state_row[j] = state_row[j] ^ w_val;
+        }
+    }
+}
+
+void print_state(unsigned int *state) {
+    int i, j;
+    unsigned char *bytes;
+
+    bytes = (unsigned char *) state;
+
+    fprintf(stdout, "%02x ", (unsigned int) bytes[0]);
+    fprintf(stdout, "%02x ", (unsigned int) bytes[4]);
+    fprintf(stdout, "%02x ", (unsigned int) bytes[8]);
+    fprintf(stdout, "%02x ", (unsigned int) bytes[12]);
+    fprintf(stdout, "\n");
+    fprintf(stdout, "%02x ", (unsigned int) bytes[1]);
+    fprintf(stdout, "%02x ", (unsigned int) bytes[5]);
+    fprintf(stdout, "%02x ", (unsigned int) bytes[9]);
+    fprintf(stdout, "%02x ", (unsigned int) bytes[13]);
+    fprintf(stdout, "\n");
+    fprintf(stdout, "%02x ", (unsigned int) bytes[2]);
+    fprintf(stdout, "%02x ", (unsigned int) bytes[6]);
+    fprintf(stdout, "%02x ", (unsigned int) bytes[10]);
+    fprintf(stdout, "%02x ", (unsigned int) bytes[14]);
+    fprintf(stdout, "\n");
+    fprintf(stdout, "%02x ", (unsigned int) bytes[3]);
+    fprintf(stdout, "%02x ", (unsigned int) bytes[7]);
+    fprintf(stdout, "%02x ", (unsigned int) bytes[11]);
+    fprintf(stdout, "%02x ", (unsigned int) bytes[15]);
+    fprintf(stdout, "\n");
+}
+
