@@ -1,4 +1,10 @@
 pr1
 pr2
+*.out
+*.txt
+*.pdf
+*.log
+*.aux
+*.toc
 *.o
 .*.sw*
