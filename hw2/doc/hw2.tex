@@ -1,197 +1,22 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Programming/Coding Assignment
-% LaTeX Template
-%
-% This template has been downloaded from:
-% http://www.latextemplates.com
-%
-% Original author:
-% Ted Pavlic (http://www.tedpavlic.com)
-%
-% Note:
-% The \lipsum[#] commands throughout this template generate dummy text
-% to fill the template out. These commands should all be removed when 
-% writing assignment content.
-%
-% This template uses a Perl script as an example snippet of code, most other
-% languages are also usable. Configure them in the "CODE INCLUSION 
-% CONFIGURATION" section.
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[a4paper]{report}
+\usepackage{listings}
 
-%----------------------------------------------------------------------------------------
-%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
-%----------------------------------------------------------------------------------------
-
-\documentclass{article}
-
-\usepackage{fancyhdr} % Required for custom headers
-\usepackage{lastpage} % Required to determine the last page for the footer
-\usepackage{extramarks} % Required for headers and footers
-\usepackage[usenames,dvipsnames]{color} % Required for custom colors
-\usepackage{graphicx} % Required to insert images
-\usepackage{listings} % Required for insertion of code
-\usepackage{courier} % Required for the courier font
-\usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
-\usepackage{verbatim}
-\usepackage{enumitem}
-
-% Margins
-\topmargin=-0.45in
-\evensidemargin=0in
-\oddsidemargin=0in
-\textwidth=6.5in
-\textheight=9.0in
-\headsep=0.25in
-
-\linespread{1.1} % Line spacing
-
-% Set up the header and footer
-\pagestyle{fancy}
-\lhead{\hmwkAuthorName} % Top left header
-\chead{\hmwkClass\ (\hmwkClassInstructor\ \hmwkClassTime): \hmwkTitle} % Top center head
-\rhead{\firstxmark} % Top right header
-\lfoot{\lastxmark} % Bottom left footer
-\cfoot{} % Bottom center footer
-\rfoot{Page\ \thepage\ of\ \protect\pageref{LastPage}} % Bottom right footer
-\renewcommand\headrulewidth{0.4pt} % Size of the header rule
-\renewcommand\footrulewidth{0.4pt} % Size of the footer rule
-
-\setlength\parindent{0pt} % Removes all indentation from paragraphs
-
-%----------------------------------------------------------------------------------------
-%	CODE INCLUSION CONFIGURATION
-%----------------------------------------------------------------------------------------
-
-\definecolor{MyDarkGreen}{rgb}{0.0,0.4,0.0} % This is the color used for comments
-\lstloadlanguages{Perl} % Load Perl syntax for listings, for a list of other languages supported see: ftp://ftp.tex.ac.uk/tex-archive/macros/latex/contrib/listings/listings.pdf
-\lstset{language=Perl, % Use Perl in this example
-        frame=single, % Single frame around code
-        basicstyle=\small\ttfamily, % Use small true type font
-        keywordstyle=[1]\color{Blue}\bf, % Perl functions bold and blue
-        keywordstyle=[2]\color{Purple}, % Perl function arguments purple
-        keywordstyle=[3]\color{Blue}\underbar, % Custom functions underlined and blue
-        identifierstyle=, % Nothing special about identifiers                                         
-        commentstyle=\usefont{T1}{pcr}{m}{sl}\color{MyDarkGreen}\small, % Comments small dark green courier font
-        stringstyle=\color{Purple}, % Strings are purple
-        showstringspaces=false, % Don't put marks in string spaces
-        tabsize=5, % 5 spaces per tab
-        %
-        % Put standard Perl functions not included in the default language here
-        morekeywords={rand},
-        %
-        % Put Perl function parameters here
-        morekeywords=[2]{on, off, interp},
-        %
-        % Put user defined functions here
-        morekeywords=[3]{test},
-       	%
-        morecomment=[l][\color{Blue}]{...}, % Line continuation (...) like blue comment
-        numbers=left, % Line numbers on left
-        firstnumber=1, % Line numbers start with line 1
-        numberstyle=\tiny\color{Blue}, % Line numbers are blue and small
-        stepnumber=5 % Line numbers go in steps of 5
-}
-
-% Creates a new command to include a perl script, the first parameter is the filename of the script (without .pl), the second parameter is the caption
-\newcommand{\perlscript}[2]{
-\begin{itemize}
-\item[]\lstinputlisting[caption=#2,label=#1]{#1.pl}
-\end{itemize}
-}
-
-%----------------------------------------------------------------------------------------
-%	DOCUMENT STRUCTURE COMMANDS
-%	Skip this unless you know what you're doing
-%----------------------------------------------------------------------------------------
-
-% Header and footer for when a page split occurs within a problem environment
-\newcommand{\enterProblemHeader}[1]{
-\nobreak\extramarks{#1}{#1 continued on next page\ldots}\nobreak
-\nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak
-}
-
-% Header and footer for when a page split occurs between problem environments
-\newcommand{\exitProblemHeader}[1]{
-\nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak
-\nobreak\extramarks{#1}{}\nobreak
-}
-
-\setcounter{secnumdepth}{0} % Removes default section numbers
-\newcounter{homeworkProblemCounter} % Creates a counter to keep track of the number of problems
-
-\newcommand{\homeworkProblemName}{}
-\newenvironment{homeworkProblem}[1][Problem \arabic{homeworkProblemCounter}]{ % Makes a new environment called homeworkProblem which takes 1 argument (custom name) but the default is "Problem #"
-\stepcounter{homeworkProblemCounter} % Increase counter for number of problems
-\renewcommand{\homeworkProblemName}{#1} % Assign \homeworkProblemName the name of the problem
-\section{\homeworkProblemName} % Make a section in the document with the custom problem count
-\enterProblemHeader{\homeworkProblemName} % Header and footer within the environment
-}{
-\exitProblemHeader{\homeworkProblemName} % Header and footer after the environment
-}
-
-\newcommand{\problemAnswer}[1]{ % Defines the problem answer command with the content as the only argument
-\noindent\framebox[\columnwidth][c]{\begin{minipage}{0.98\columnwidth}#1\end{minipage}} % Makes the box around the problem answer and puts the content inside
-}
-
-\newcommand{\homeworkSectionName}{}
-\newenvironment{homeworkSection}[1]{ % New environment for sections within homework problems, takes 1 argument - the name of the section
-\renewcommand{\homeworkSectionName}{#1} % Assign \homeworkSectionName to the name of the section from the environment argument
-\subsection{\homeworkSectionName} % Make a subsection with the custom name of the subsection
-\enterProblemHeader{\homeworkProblemName\ [\homeworkSectionName]} % Header and footer within the environment
-}{
-\enterProblemHeader{\homeworkProblemName} % Header and footer after the environment
-}
-
-%----------------------------------------------------------------------------------------
-%	NAME AND CLASS SECTION
-%----------------------------------------------------------------------------------------
-
-\newcommand{\hmwkTitle}{Homework\ \#2} % Assignment title
-\newcommand{\hmwkDueDate}{Wednesday,\ February\ 15,\ 2017} % Due date
-\newcommand{\hmwkClass}{CEEN\ 8886: Wireless Security} % Course/class
-\newcommand{\hmwkClassTime}{4:00pm} % Class/lecture time
-\newcommand{\hmwkClassInstructor}{Dr. Yi Xian} % Teacher/lecturer
-\newcommand{\hmwkAuthorName}{Kelly Boswell} % Your name
-
-%----------------------------------------------------------------------------------------
-%	TITLE PAGE
-%----------------------------------------------------------------------------------------
-
-\title{
-\vspace{2in}
-\textmd{\textbf{\hmwkClass:\ \hmwkTitle}}\\
-\normalsize\vspace{0.1in}\small{Due\ on\ \hmwkDueDate}\\
-\vspace{0.1in}\large{\textit{\hmwkClassInstructor\ \hmwkClassTime}}
-\vspace{3in}
-}
-
-\author{\textbf{\hmwkAuthorName}}
-\date{} % Insert date here if you want it to appear below your name
-
-%----------------------------------------------------------------------------------------
+\title{CEEN 8886: Homework 2}
+\date{2017-02-15}
+\author{Kelly Boswell}
 
 \begin{document}
 
 \maketitle
 
-%----------------------------------------------------------------------------------------
-%	TABLE OF CONTENTS
-%----------------------------------------------------------------------------------------
-
-%\setcounter{tocdepth}{1} % Uncomment this line if you don't want subsections listed in the ToC
+\pagenumbering{gobble}
 
 \newpage
-\tableofcontents
-\newpage
 
-%----------------------------------------------------------------------------------------
-%	PROBLEM 1
-%----------------------------------------------------------------------------------------
+\pagenumbering{arabic}
 
-% To have just one problem per page, simply put a \clearpage after each problem
+\section{Problem 1}
 
-\begin{homeworkProblem}
 Given the 128-bit hexadecimal AES key `2B7E151628AED2A6ABF7158809CF4F3C`, the following key
 schedule is generated:
 
@@ -209,37 +34,629 @@ round = 9 : bf e2 bf 90 45 59 fa b2 a1 64 80 b4 f7 f1 cb d8
 round = 10: 28 fd de f8 6d a4 24 4a cc c0 a4 fe 3b 31 6f 26 
 \end{verbatim}
 
-% Listing \ref{homework_example} shows a Perl script.
+\section{Problem 2}
 
-% \perlscript{homework_example}{Sample Perl Script With Highlighting}
-
-%\lipsum[1]
-\end{homeworkProblem}
-
-%----------------------------------------------------------------------------------------
-%	PROBLEM 2
-%----------------------------------------------------------------------------------------
-
-\begin{homeworkProblem}
-%\lipsum[2]
 For the AES algorithm, given the plaintext `2B7E151628AED2A6ABF7158809CF4F3C` and the
-128-bit key of all ones, 1) the original contents of \emph{State} is displayed; 2) the
-value of \emph{State} after the initial AddRoundKey is displayed; 3) the value of \emph{State}
-after SubBytes is displayed; and 4) the value of \emph{State} after ShiftRows is displayed.
+128-bit key of all ones, 1) the original contents of \textbf{State} is displayed; 2) the
+value of \textbf{State} after the initial AddRoundKey is displayed; 3) the value of \textbf{State}
+after SubBytes is displayed; and 4) the value of \textbf{State} after ShiftRows is displayed. However,
+since the meaning of `the 128-bit key of all ones` is ambiguous, several different
+values of each are displayed along with their corresponding key value in hexadecimal format.
 
-However, since the meaning of `the 128-bit key of all ones` is ambiguous, several different
-different values of each are displayed for different key values.
-%\begin{verbatim}
-%\end{verbatim}
+\subsection{Key value of 0x01010101010101010101010101010101} 
 
-%\problemAnswer{
-%\begin{center}
-%\includegraphics[width=0.75\columnwidth]{example_figure} % Example image
-%\end{center}
+Assuming that each byte value of the 128-bit key is 0x01, the output is as follows:
 
-%\lipsum[3-5]
-\end{homeworkProblem}
+\begin{verbatim}
+Initial State:
+01 01 01 01 
+01 01 01 01 
+01 01 01 01 
+01 01 01 01 
 
-%----------------------------------------------------------------------------------------
+State after AddRoundKey:
+01 05 09 0c 
+00 04 08 0d 
+03 07 0a 0e 
+02 06 0b 0f 
+
+State after SubBytes:
+7c 6b 01 fe 
+63 f2 30 d7 
+7b c5 67 ab 
+77 6f 2b 76 
+
+State after ShiftRows:
+7c 6b 01 fe 
+f2 30 d7 63 
+67 ab 7b c5 
+76 77 6f 2b 
+\end{verbatim}
+
+\subsection{Key value of 0x11111111111111111111111111111111} 
+
+Assuming that each nibble value of the 128-bit key is 0x1, the output is as follows:
+
+\begin{verbatim}
+Initial State:
+11 11 11 11 
+11 11 11 11 
+11 11 11 11 
+11 11 11 11 
+
+State after AddRoundKey:
+11 15 19 1c 
+10 14 18 1d 
+13 17 1a 1e 
+12 16 1b 1f 
+
+State after SubBytes:
+82 59 d4 9c 
+ca fa ad a4 
+7d f0 a2 72 
+c9 47 af c0 
+
+State after ShiftRows:
+82 59 d4 9c 
+fa ad a4 ca 
+a2 72 7d f0 
+c0 c9 47 af 
+\end{verbatim}
+
+\subsection{Key value of 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF} 
+
+Assuming that each bit value of the 128-bit key is 1, the output is as follows:
+
+\begin{verbatim}
+Initial State:
+ff ff ff ff 
+ff ff ff ff 
+ff ff ff ff 
+ff ff ff ff 
+
+State after AddRoundKey:
+ff fb f7 f2 
+fe fa f6 f3 
+fd f9 f4 f0 
+fc f8 f5 f1 
+
+State after SubBytes:
+16 0f 68 89 
+bb 2d 42 0d 
+54 99 bf 8c 
+b0 41 e6 a1 
+
+State after ShiftRows:
+16 0f 68 89 
+2d 42 0d bb 
+bf 8c 54 99 
+a1 b0 41 e6 
+\end{verbatim}
+
+\section{Code Listings}
+
+Overall, this code is pretty awfully written. Given more time, I would definitely clean it up quite a bit.
+But it did get the job done. It at least gave me correct results when I compared its output with a couple of
+examples.
+
+\subsection{hw2.h}
+
+\begin{lstlisting}
+#ifndef __HW2_H__
+#define __HW2_H__
+
+extern const unsigned char S_BOX[16][16];
+extern const unsigned char S_BOX_INV[16][16];
+extern const unsigned int RCON[255];
+
+int hex2int(char *achar, int *aint);
+int hex2ascii(unsigned char *key);
+
+#endif
+\end{lstlisting}
+
+\subsection{hw2.c}
+
+\begin{lstlisting}
+#include <stdio.h>
+
+#include "hw2.h"
+
+/*extern*/ const unsigned char S_BOX[16][16] = {
+    {0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30,
+        0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76},
+    {0xca, 0x82, 0xc9, 0x7d, 0xfa, 0x59, 0x47, 0xf0, 0xad,
+        0xd4, 0xa2, 0xaf, 0x9c, 0xa4, 0x72, 0xc0},
+    {0xb7, 0xfd, 0x93, 0x26, 0x36, 0x3f, 0xf7, 0xcc, 0x34,
+        0xa5, 0xe5, 0xf1, 0x71, 0xd8, 0x31, 0x15},
+    {0x04, 0xc7, 0x23, 0xc3, 0x18, 0x96, 0x05, 0x9a, 0x07,
+        0x12, 0x80, 0xe2, 0xeb, 0x27, 0xb2, 0x75},
+    {0x09, 0x83, 0x2c, 0x1a, 0x1b, 0x6e, 0x5a, 0xa0, 0x52,
+        0x3b, 0xd6, 0xb3, 0x29, 0xe3, 0x2f, 0x84},
+    {0x53, 0xd1, 0x00, 0xed, 0x20, 0xfc, 0xb1, 0x5b, 0x6a,
+        0xcb, 0xbe, 0x39, 0x4a, 0x4c, 0x58, 0xcf},
+    {0xd0, 0xef, 0xaa, 0xfb, 0x43, 0x4d, 0x33, 0x85, 0x45,
+        0xf9, 0x02, 0x7f, 0x50, 0x3c, 0x9f, 0xa8},
+    {0x51, 0xa3, 0x40, 0x8f, 0x92, 0x9d, 0x38, 0xf5, 0xbc,
+        0xb6, 0xda, 0x21, 0x10, 0xff, 0xf3, 0xd2},
+    {0xcd, 0x0c, 0x13, 0xec, 0x5f, 0x97, 0x44, 0x17, 0xc4,
+        0xa7, 0x7e, 0x3d, 0x64, 0x5d, 0x19, 0x73},
+    {0x60, 0x81, 0x4f, 0xdc, 0x22, 0x2a, 0x90, 0x88, 0x46,
+        0xee, 0xb8, 0x14, 0xde, 0x5e, 0x0b, 0xdb},
+    {0xe0, 0x32, 0x3a, 0x0a, 0x49, 0x06, 0x24, 0x5c, 0xc2,
+        0xd3, 0xac, 0x62, 0x91, 0x95, 0xe4, 0x79},
+    {0xe7, 0xc8, 0x37, 0x6d, 0x8d, 0xd5, 0x4e, 0xa9, 0x6c,
+        0x56, 0xf4, 0xea, 0x65, 0x7a, 0xae, 0x08},
+    {0xba, 0x78, 0x25, 0x2e, 0x1c, 0xa6, 0xb4, 0xc6, 0xe8,
+        0xdd, 0x74, 0x1f, 0x4b, 0xbd, 0x8b, 0x8a},
+    {0x70, 0x3e, 0xb5, 0x66, 0x48, 0x03, 0xf6, 0x0e, 0x61,
+        0x35, 0x57, 0xb9, 0x86, 0xc1, 0x1d, 0x9e},
+    {0xe1, 0xf8, 0x98, 0x11, 0x69, 0xd9, 0x8e, 0x94, 0x9b,
+        0x1e, 0x87, 0xe9, 0xce, 0x55, 0x28, 0xdf},
+    {0x8c, 0xa1, 0x89, 0x0d, 0xbf, 0xe6, 0x42, 0x68, 0x41,
+        0x99, 0x2d, 0x0f, 0xb0, 0x54, 0xbb, 0x16}
+};
+
+/*extern*/ const unsigned char S_BOX_INV[16][16] = {
+    {0x52, 0x09, 0x6a, 0xd5, 0x30, 0x36, 0xa5, 0x38, 0xbf,
+        0x40, 0xa3, 0x9e, 0x81, 0xf3, 0xd7, 0xfb},
+    {0x7c, 0xe3, 0x39, 0x82, 0x9b, 0x2f, 0xff, 0x87, 0x34,
+        0x8e, 0x43, 0x44, 0xc4, 0xde, 0xe9, 0xcb},
+    {0x54, 0x7b, 0x94, 0x32, 0xa6, 0xc2, 0x23, 0x3d, 0xee,
+        0x4c, 0x95, 0x0b, 0x42, 0xfa, 0xc3, 0x4e},
+    {0x08, 0x2e, 0xa1, 0x66, 0x28, 0xd9, 0x24, 0xb2, 0x76,
+        0x5b, 0xa2, 0x49, 0x6d, 0x8b, 0xd1, 0x25},
+    {0x72, 0xf8, 0xf6, 0x64, 0x86, 0x68, 0x98, 0x16, 0xd4,
+        0xa4, 0x5c, 0xcc, 0x5d, 0x65, 0xb6, 0x92},
+    {0x6c, 0x70, 0x48, 0x50, 0xfd, 0xed, 0xb9, 0xda, 0x5e,
+        0x15, 0x46, 0x57, 0xa7, 0x8d, 0x9d, 0x84},
+    {0x90, 0xd8, 0xab, 0x00, 0x8c, 0xbc, 0xd3, 0x0a, 0xf7,
+        0xe4, 0x58, 0x05, 0xb8, 0xb3, 0x45, 0x06},
+    {0xd0, 0x2c, 0x1e, 0x8f, 0xca, 0x3f, 0x0f, 0x02, 0xc1,
+        0xaf, 0xbd, 0x03, 0x01, 0x13, 0x8a, 0x6b},
+    {0x3a, 0x91, 0x11, 0x41, 0x4f, 0x67, 0xdc, 0xea, 0x97,
+        0xf2, 0xcf, 0xce, 0xf0, 0xb4, 0xe6, 0x73},
+    {0x96, 0xac, 0x74, 0x22, 0xe7, 0xad, 0x35, 0x85, 0xe2,
+        0xf9, 0x37, 0xe8, 0x1c, 0x75, 0xdf, 0x6e},
+    {0x47, 0xf1, 0x1a, 0x71, 0x1d, 0x29, 0xc5, 0x89, 0x6f,
+        0xb7, 0x62, 0x0e, 0xaa, 0x18, 0xbe, 0x1b},
+    {0xfc, 0x56, 0x3e, 0x4b, 0xc6, 0xd2, 0x79, 0x20, 0x9a,
+        0xdb, 0xc0, 0xfe, 0x78, 0xcd, 0x5a, 0xf4},
+    {0x1f, 0xdd, 0xa8, 0x33, 0x88, 0x07, 0xc7, 0x31, 0xb1,
+        0x12, 0x10, 0x59, 0x27, 0x80, 0xec, 0x5f},
+    {0x60, 0x51, 0x7f, 0xa9, 0x19, 0xb5, 0x4a, 0x0d, 0x2d,
+        0xe5, 0x7a, 0x9f, 0x93, 0xc9, 0x9c, 0xef},
+    {0xa0, 0xe0, 0x3b, 0x4d, 0xae, 0x2a, 0xf5, 0xb0, 0xc8,
+        0xeb, 0xbb, 0x3c, 0x83, 0x53, 0x99, 0x61},
+    {0x17, 0x2b, 0x04, 0x7e, 0xba, 0x77, 0xd6, 0x26, 0xe1,
+        0x69, 0x14, 0x63, 0x55, 0x21, 0x0c, 0x7d}
+};
+
+/*extern*/ const unsigned int RCON[255] = {
+    0x8d, 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80,
+        0x1b, 0x36, 0x6c, 0xd8, 0xab, 0x4d, 0x9a,
+    0x2f, 0x5e, 0xbc, 0x63, 0xc6, 0x97, 0x35, 0x6a, 0xd4,
+        0xb3, 0x7d, 0xfa, 0xef, 0xc5, 0x91, 0x39,
+    0x72, 0xe4, 0xd3, 0xbd, 0x61, 0xc2, 0x9f, 0x25, 0x4a,
+        0x94, 0x33, 0x66, 0xcc, 0x83, 0x1d, 0x3a,
+    0x74, 0xe8, 0xcb, 0x8d, 0x01, 0x02, 0x04, 0x08, 0x10,
+        0x20, 0x40, 0x80, 0x1b, 0x36, 0x6c, 0xd8,
+    0xab, 0x4d, 0x9a, 0x2f, 0x5e, 0xbc, 0x63, 0xc6, 0x97,
+        0x35, 0x6a, 0xd4, 0xb3, 0x7d, 0xfa, 0xef,
+    0xc5, 0x91, 0x39, 0x72, 0xe4, 0xd3, 0xbd, 0x61, 0xc2,
+        0x9f, 0x25, 0x4a, 0x94, 0x33, 0x66, 0xcc,
+    0x83, 0x1d, 0x3a, 0x74, 0xe8, 0xcb, 0x8d, 0x01, 0x02,
+        0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1b,
+    0x36, 0x6c, 0xd8, 0xab, 0x4d, 0x9a, 0x2f, 0x5e, 0xbc,
+        0x63, 0xc6, 0x97, 0x35, 0x6a, 0xd4, 0xb3,
+    0x7d, 0xfa, 0xef, 0xc5, 0x91, 0x39, 0x72, 0xe4, 0xd3,
+        0xbd, 0x61, 0xc2, 0x9f, 0x25, 0x4a, 0x94,
+    0x33, 0x66, 0xcc, 0x83, 0x1d, 0x3a, 0x74, 0xe8, 0xcb,
+        0x8d, 0x01, 0x02, 0x04, 0x08, 0x10, 0x20,
+    0x40, 0x80, 0x1b, 0x36, 0x6c, 0xd8, 0xab, 0x4d, 0x9a,
+        0x2f, 0x5e, 0xbc, 0x63, 0xc6, 0x97, 0x35,
+    0x6a, 0xd4, 0xb3, 0x7d, 0xfa, 0xef, 0xc5, 0x91, 0x39,
+        0x72, 0xe4, 0xd3, 0xbd, 0x61, 0xc2, 0x9f,
+    0x25, 0x4a, 0x94, 0x33, 0x66, 0xcc, 0x83, 0x1d, 0x3a,
+        0x74, 0xe8, 0xcb, 0x8d, 0x01, 0x02, 0x04,
+    0x08, 0x10, 0x20, 0x40, 0x80, 0x1b, 0x36, 0x6c, 0xd8,
+        0xab, 0x4d, 0x9a, 0x2f, 0x5e, 0xbc, 0x63,
+    0xc6, 0x97, 0x35, 0x6a, 0xd4, 0xb3, 0x7d, 0xfa, 0xef,
+        0xc5, 0x91, 0x39, 0x72, 0xe4, 0xd3, 0xbd,
+    0x61, 0xc2, 0x9f, 0x25, 0x4a, 0x94, 0x33, 0x66, 0xcc,
+        0x83, 0x1d, 0x3a, 0x74, 0xe8, 0xcb
+};
+
+int hex2char(char *str, unsigned char *c) {
+    int status;
+    int digits[2];
+    int aint;
+    int i;
+
+    status = 0;
+
+    for (i = 0; i < 2; ++i) {
+        switch (str[i]) {
+            case '0':
+                digits[i] = 0;
+                break;
+            case '1':
+                digits[i] = 1;
+                break;
+            case '2':
+                digits[i] = 2;
+                break;
+            case '3':
+                digits[i] = 3;
+                break;
+            case '4':
+                digits[i] = 4;
+                break;
+            case '5':
+                digits[i] = 5;
+                break;
+            case '6':
+                digits[i] = 6;
+                break;
+            case '7':
+                digits[i] = 7;
+                break;
+            case '8':
+                digits[i] = 8;
+                break;
+            case '9':
+                digits[i] = 9;
+                break;
+            case 'a':
+            case 'A':
+                digits[i] = 10;
+                break;
+            case 'b':
+            case 'B':
+                digits[i] = 11;
+                break;
+            case 'c':
+            case 'C':
+                digits[i] = 12;
+                break;
+            case 'd':
+            case 'D':
+                digits[i] = 13;
+                break;
+            case 'e':
+            case 'E':
+                digits[i] = 14;
+                break;
+            case 'f':
+            case 'F':
+                digits[i] = 15;
+                break;
+            default:
+                fprintf(stderr, "Invalid character in hex string: %c\n", str[i]);
+                status = 1;
+                break;
+        }
+    }
+
+    if (status == 0) {
+        aint = 0;
+        aint = (digits[0] << 4) | digits[1];
+        *c = (unsigned char) aint;
+    }
+
+    return status;
+}
+
+int hex2ascii(unsigned char *key) {
+    int status;
+    char achar[3];
+    unsigned char c;
+    int i, j;
+
+    status = 0;
+
+    achar[2] = '\0';
+    for (i = 0; i < 16; ++i) {
+        for (j = 0; j < 2; ++j) {
+            achar[j] = key[2 * i + j];
+        }
+        if (status = hex2char(achar, &c) != 0) {
+            break;
+        }
+        key[i] = c;
+    }
+    key[16] = '\0';
+
+    return status;
+}
+\end{lstlisting}
+
+\subsection{pr1.c}
+
+\begin{lstlisting}
+#include <ctype.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <errno.h>
+#include <string.h>
+#include <unistd.h>
+#include <math.h>
+
+#include "hw2.h"
+
+void usage(FILE *out, char *pname);
+
+int copy_key(unsigned char *key, char *orig, int size);
+void generate_round_keys(unsigned char *key, unsigned int *w);
+void print_round_keys(unsigned int *w);
+
+unsigned int sub_word(unsigned int w);
+void sub_bytes(unsigned int *state);
+unsigned int sub_byte(unsigned char byte);
+unsigned int rot_word(unsigned int w);
+void shift_rows(unsigned int *state);
+
+void add_round_key(unsigned int *state, unsigned int *w);
+void print_state(unsigned int *state);
+
+int main(int argc, char **argv) {
+    int status;
+    unsigned char key[33];
+    unsigned int w[44];
+    unsigned int state[4];
+
+    status = 0;
+
+    if (argc != 3) {
+        usage(stderr, argv[0]);
+        status = 1;
+    }
+
+    if (status == 0) {
+        status = copy_key(key, argv[1], 32);
+    }
+
+    if (status == 0) {
+        status = copy_key((unsigned char *) state, argv[2], 32);
+    }
+
+    if (status == 0) {
+        status = hex2ascii((unsigned char *) state);
+    }
+
+    if (status == 0) {
+        status = hex2ascii(key);
+    }
+
+    if (status == 0) {
+        generate_round_keys(key, w);
+
+        printf("Round keys:\n");
+        print_round_keys(w);
+        printf("\n");
+
+        printf("Initial State:\n");
+        print_state(state);
+        printf("\n");
+
+        add_round_key(state, &w[0]);
+        printf("State after AddRoundKey:\n");
+        print_state(state);
+        printf("\n");
+
+        sub_bytes(state);
+        printf("State after SubBytes:\n");
+        print_state(state);
+        printf("\n");
+
+        shift_rows(state);
+        printf("State after ShiftRows:\n");
+        print_state(state);
+        printf("\n");
+    }
+}
+
+void usage(FILE *out, char *pname) {
+    fprintf(out, "Usage: %s <key> <plaintext>\n", pname);
+}
+
+int copy_key(unsigned char *key, char *orig, int size) {
+    int status;
+    size_t s, i;
+
+    status = 0;
+
+    s = strlen(orig);
+    if (s != size) {
+        fprintf(stderr, "Invalid string length: %lu\n", s);
+    } else {
+        memcpy(key, orig, sizeof(char) * s);
+        key[s] = '\0';
+    }
+
+    return status;
+}
+
+void generate_round_keys(unsigned char *key, unsigned int *w) {
+    int i;
+    unsigned int temp, gw, rcon;
+
+    for (i = 0; i < 4; ++i) {
+        w[i] = (key[4 * i] << 24)
+            | (key[4 * i + 1] << 16)
+            | (key[4 * i + 2] << 8)
+            | key[4 * i + 3];
+    }
+
+    for (i = 4; i < 44; ++i) {
+        temp = w[i - 1];
+        if ((i % 4) == 0) {
+            gw = sub_word(rot_word(temp));
+            rcon = RCON[i/4] << 24;
+            temp = gw ^ rcon;
+        }
+        w[i] = w[i - 4] ^ temp;
+    }
+}
+
+void print_round_keys(unsigned int *w) {
+    int i, j, round, index;
+
+    round = 0;
+    index = 0;
+    for (i = 0; i < 11; ++i) {
+        fprintf(stdout, "round = %-2d: ", round);
+        for (j = 0; j < 4; ++j) {
+            fprintf(stdout, "%02x ", (w[index] & 0xff000000) >> 24);
+            fprintf(stdout, "%02x ", (w[index] & 0x00ff0000) >> 16);
+            fprintf(stdout, "%02x ", (w[index] & 0x0000ff00) >> 8);
+            fprintf(stdout, "%02x ", (w[index] & 0x000000ff));
+
+            ++index;
+        }
+        fprintf(stdout, "\n");
+        ++round;
+    }
+}
+
+unsigned int sub_word(unsigned int w) {
+    unsigned int retval;
+    unsigned int row, col;
+    unsigned char *cptr;
+    int i;
+
+    retval = w;
+    cptr = (unsigned char *) &retval;
+
+    for (i = 0; i < 4; ++i) { 
+        row = (0xf0 & cptr[i]) >> 4;
+        col = (0x0f & cptr[i]);
+        cptr[i] = S_BOX[row][col];
+    }
+
+    return retval;
+}
+
+void sub_bytes(unsigned int *state) {
+    int i;
+    unsigned char *bytes;
+
+    bytes = (unsigned char *) state;
+
+    for (i = 0; i < 16; ++i) {
+        bytes[i] = sub_byte(bytes[i]);
+    }
+}
+
+unsigned int sub_byte(unsigned char byte) {
+    unsigned int row, col;
+    row = (0xf0 & byte) >> 4;
+    col = (0x0f & byte);
+    return S_BOX[row][col];
+}
+
+unsigned int rot_word(unsigned int w) {
+    unsigned retval;
+    unsigned char tmp, *cptr;
+    int i;
+
+    retval = w;
+
+    cptr = (unsigned char *) &retval;
+    i = 3;
+
+    tmp = cptr[3];
+    for (i = 3; i > 0; --i) {
+        cptr[i] = cptr[i - 1];
+    };
+    cptr[0] = tmp;
+
+    return retval;
+}
+
+void shift_rows(unsigned int *state) {
+    unsigned int tmp, tmp2, tmp3;
+    unsigned char *bytes;
+
+    bytes = (unsigned char *) state;
+    tmp = bytes[1];
+    bytes[1] = bytes[5];
+    bytes[5] = bytes[9];
+    bytes[9] = bytes[13];
+    bytes[13] = tmp;
+
+    tmp = bytes[2];
+    tmp2 = bytes[6];
+    bytes[2] = bytes[10];
+    bytes[6] = bytes[14];
+    bytes[10] = tmp;
+    bytes[14] = tmp2;
+
+    tmp = bytes[3];
+    tmp2 = bytes[7];
+    tmp3 = bytes[11];
+    bytes[3] = bytes[15];
+    bytes[7] = tmp;
+    bytes[11] = tmp2;
+    bytes[15] = tmp3;
+}
+
+void add_round_key(unsigned int *state, unsigned int *w) {
+    int i, j;
+    unsigned char *state_row;
+    unsigned char w_val;
+
+    static unsigned int mask[4] = {
+        0xff000000,
+        0x00ff0000,
+        0x0000ff00,
+        0x000000ff
+    };
+
+    static unsigned int shift[4] = {
+        24,
+        16,
+        8,
+        0
+    };
+
+    for (i = 0; i < 4; ++i) {
+        state_row = (unsigned char *) &state[i];
+        for (j = 0; j < 4; ++j) {
+            w_val = (unsigned char)((w[i] & mask[j]) >> shift[j]);
+            state_row[j] = state_row[j] ^ w_val;
+        }
+    }
+}
+
+void print_state(unsigned int *state) {
+    int i, j;
+    unsigned char *bytes;
+
+    bytes = (unsigned char *) state;
+
+    fprintf(stdout, "%02x ", (unsigned int) bytes[0]);
+    fprintf(stdout, "%02x ", (unsigned int) bytes[4]);
+    fprintf(stdout, "%02x ", (unsigned int) bytes[8]);
+    fprintf(stdout, "%02x ", (unsigned int) bytes[12]);
+    fprintf(stdout, "\n");
+    fprintf(stdout, "%02x ", (unsigned int) bytes[1]);
+    fprintf(stdout, "%02x ", (unsigned int) bytes[5]);
+    fprintf(stdout, "%02x ", (unsigned int) bytes[9]);
+    fprintf(stdout, "%02x ", (unsigned int) bytes[13]);
+    fprintf(stdout, "\n");
+    fprintf(stdout, "%02x ", (unsigned int) bytes[2]);
+    fprintf(stdout, "%02x ", (unsigned int) bytes[6]);
+    fprintf(stdout, "%02x ", (unsigned int) bytes[10]);
+    fprintf(stdout, "%02x ", (unsigned int) bytes[14]);
+    fprintf(stdout, "\n");
+    fprintf(stdout, "%02x ", (unsigned int) bytes[3]);
+    fprintf(stdout, "%02x ", (unsigned int) bytes[7]);
+    fprintf(stdout, "%02x ", (unsigned int) bytes[11]);
+    fprintf(stdout, "%02x ", (unsigned int) bytes[15]);
+    fprintf(stdout, "\n");
+}
+
+\end{lstlisting}
 
 \end{document}
