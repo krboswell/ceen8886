@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-I. -g -O2
+CFLAGS=-I. -g
 OBJS=hw2.o pr1.o
 
 %.o: %.c

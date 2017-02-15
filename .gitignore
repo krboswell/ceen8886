@@ -7,5 +7,6 @@ pr2
 *.log
 *.aux
 *.toc
+*.gz
 *.o
 .*.sw*

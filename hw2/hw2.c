@@ -152,7 +152,7 @@ int hex2ascii(unsigned char *key) {
         for (j = 0; j < 2; ++j) {
             achar[j] = key[2 * i + j];
         }
-        if (status = hex2char(achar, &c) != 0) {
+        if ((status = hex2char(achar, &c)) != 0) {
             break;
         }
         key[i] = c;

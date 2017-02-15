@@ -90,13 +90,7 @@ int copy_key(unsigned char *key, char *orig, int size) {
 
     status = 0;
 
-    s = strlen(orig);
-    if (s != size) {
-        fprintf(stderr, "Invalid string length: %lu\n", s);
-    } else {
-        memcpy(key, orig, sizeof(char) * s);
-        key[s] = '\0';
-    }
+    memcpy(key, orig, sizeof(unsigned char) * size);
 
     return status;
 }
