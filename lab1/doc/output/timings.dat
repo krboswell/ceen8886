@@ -1,0 +1,11 @@
+Mode	Stage	Time
+cbc	encrypt	0.032
+cbc	decrypt	0.043
+cfb	encrypt	0.052
+cfb	decrypt	0.060
+ctr	encrypt	0.054
+ctr	decrypt	0.057
+ecb	encrypt	0.044
+ecb	decrypt	0.067
+ofb	encrypt	0.052
+ofb	decrypt	0.061

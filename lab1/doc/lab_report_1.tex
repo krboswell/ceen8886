@@ -29,6 +29,7 @@
 \usepackage[nodayofweek,level]{datetime}
 \usepackage{mdframed}
 \usepackage{listings}
+\usepackage{enumitem}
 
 \lstset{ %
 language=C,                    % choose the language of the code
@@ -38,8 +39,6 @@ postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{red}\hookrightarrow\space}
 }
 
 \setlength\parindent{0pt} % Removes all indentation from paragraphs
-
-\renewcommand{\labelenumi}{\alph{enumi}.} % Make numbering in the enumerate environment by letter rather than number (e.g. section 6)
 
 %\usepackage{times} % Uncomment to use the Times New Roman font
 
@@ -105,21 +104,29 @@ Some prerequisites for completing this lab experiment are as follows:
 \section{Experiment Steps And Results}
 
 \begin{enumerate}
-\item Conduct AES encryption and decryption with OpenSSL
+\item \label{step1} Conduct AES encryption and decryption with OpenSSL
     \begin{enumerate}
-        \item Create the txt file named ``lab1.txt'' with the line ``Having
+        \item \label{1a} Create the txt file named ``lab1.txt'' with the line ``Having
                fun with Wireless Security Lab 1'' as your file content. See Figure \ref{fig:step1a}.
-        \item Check your content of your file by the cat command. See Figure
+        \item \label{1b} Check your content of your file by the cat command. See Figure
                \ref{fig:step1b}. 
-        \item Display OpenSSL's help page for encryption options. See Figure \ref{fig:step1c}.
-        \item Encrypt ``lab1.txt'' file using AES with CBC mode. Use 256-bit key size 
+        \item \label{1c} Display OpenSSL's help page for encryption options. See Figure \ref{fig:step1c}.
+        \item \label{1d} Encrypt ``lab1.txt'' file using AES with CBC mode. Use 256-bit key size 
               with no salting and base64 encoding scheme. Output the file and name it
               ``lab1\textunderscore encrypted.base64''. See Figure \ref{fig:step1d}.
-        \item Decrypt ``lab1\textunderscore encrypted.txt” using the same settings as in the previous
+        \item \label{1e} Decrypt ``lab1\textunderscore encrypted.txt” using the same settings as in the previous
               step. Output the file and name it ``lab1\textunderscore decrypted.txt''.
               See Figure \ref{fig:step1e}. Note that the contents of
               ``lab1\textunderscore decrypted.txt'' is exactly the same as the original file,
               ``lab1.txt''.
+        \item Repeat Step \ref{1d} --- Step \ref{1e} using the document Lecture02.pdf from the course website.
+              The file contents are simply too large to list all of the contents of the encrypted and decrypted
+              stages for each of the modes. Instead, the checksums of each of the outputs of the encrypted and
+              decrypted stages as well as the original input file are listed in Figure \ref{fig:step1fb}. Figure
+              \ref{fig:step1fc} shows the result of `md5sum -c output/checksums.md5sum'. Figure
+              \ref{fig:step1fd} shows the execution times of each of the stages. And finally, the shell script
+              used to generate all of these results is shown in Figure \ref{fig:step1fa}.
+
     \end{enumerate}
 \end{enumerate}
 
@@ -216,6 +223,38 @@ $> xxd lab1_decrypted.txt
 \end{mdframed}
 \caption{Creating and showing the contents of the decrypted lab1\textunderscore decrypted.txt text file.}
 \label{fig:step1e}
+\end{figure}
+
+\begin{figure}
+\begin{mdframed}
+\lstinputlisting{enc_dec_all.sh}
+\end{mdframed}
+\caption{Shell Script for Five Modes of AES Encryption and Decryption.}
+\label{fig:step1fa}
+\end{figure}
+
+\begin{figure}
+\begin{mdframed}
+\lstinputlisting{output/checksums.md5sum}
+\end{mdframed}
+\caption{MD5 Checksums of All AES Encryption and Decryption Inputs and Outputs.}
+\label{fig:step1fb}
+\end{figure}
+
+\begin{figure}
+\begin{mdframed}
+\lstinputlisting{output/checksum_result.out}
+\end{mdframed}
+\caption{MD5 Checksums Result.}
+\label{fig:step1fc}
+\end{figure}
+
+\begin{figure}
+\begin{mdframed}
+\lstinputlisting{output/timings.dat}
+\end{mdframed}
+\caption{AES Encryption Mode and Stage Timings.}
+\label{fig:step1fd}
 \end{figure}
 
 %----------------------------------------------------------------------------------------
