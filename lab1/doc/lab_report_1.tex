@@ -48,7 +48,7 @@ postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{red}\hookrightarrow\space}
 
 \title{AES Encryption with OpenSSL \\ And Programming RC4 \\ CEEN 8886 --- Wireless Security} % Title
 
-\author{Kelly \textsc{Boswell}} % Author name
+\author{Kelly \textsc{Boswell} \\ krboswell@gmail.com} % Author name
 
 \date{\Large February 27, 2017} % Date for the report
 
@@ -121,12 +121,13 @@ Some prerequisites for completing this lab experiment are as follows:
               ``lab1.txt''.
         \item Repeat Step \ref{1d} --- Step \ref{1e} using the document Lecture02.pdf from the course website.
               The file contents are simply too large to list all of the contents of the encrypted and decrypted
-              stages for each of the modes. Instead, the checksums of each of the outputs of the encrypted and
+              stages for each of the modes\footnote{These contents are available upon request, however.}.
+              Instead, the checksums of each of the outputs of the encrypted and
               decrypted stages as well as the original input file are listed in Figure \ref{fig:step1fb}. Figure
-              \ref{fig:step1fc} shows the result of `md5sum -c output/checksums.md5sum'. Figure
-              \ref{fig:step1fd} shows the execution times of each of the stages. And finally, the shell script
-              used to generate all of these results is shown in Figure \ref{fig:step1fa}.
-
+              \ref{fig:step1fc} shows the result of `md5sum -c output/checksums.md5sum' which provides a sort of
+              sanity check that the script is working as intended. Figure \ref{fig:step1fd} shows the execution
+              times of each of the stages. And finally, the shell script used to generate all of these results is
+              shown in Figure \ref{fig:step1fa}.
     \end{enumerate}
 \end{enumerate}
 
