@@ -107,7 +107,8 @@ Some prerequisites for completing this lab experiment are as follows:
 \item \label{step1} Conduct AES encryption and decryption with OpenSSL
     \begin{enumerate}
         \item \label{1a} Create the txt file named ``lab1.txt'' with the line ``Having
-               fun with Wireless Security Lab 1'' as your file content. See Figure \ref{fig:step1a}.
+               fun with Wireless Security Lab 1'' as your file content. See Figure
+               \ref{fig:step1a}\footnote{I use xxd instead of cat throughout the report for display purposes.}
         \item \label{1b} Check your content of your file by the cat command. See Figure
                \ref{fig:step1b}. 
         \item \label{1c} Display OpenSSL's help page for encryption options. See Figure \ref{fig:step1c}.
@@ -126,8 +127,24 @@ Some prerequisites for completing this lab experiment are as follows:
               decrypted stages as well as the original input file are listed in Figure \ref{fig:step1fb}. Figure
               \ref{fig:step1fc} shows the result of `md5sum -c output/checksums.md5sum' which provides a sort of
               sanity check that the script is working as intended. Figure \ref{fig:step1fd} shows the execution
-              times of each of the stages. And finally, the shell script used to generate all of these results is
-              shown in Figure \ref{fig:step1fa}.
+              times of each of the stages. Note that decryption is generally slower than the corresponding encryption
+              operation for each mode. Also note that CBC seems to be faster than the other modes. However, this is
+              unexpected since CBC encryption cannot be parallelized while CTR encryption can. It's possible that this
+              is simply due to system variablity between separate executions. If more samples are executed and the average
+              is taken, then it could be that CTR actually is faster. It's also possible that the installed version
+              of OpenSSL doesn't support a multi-threaded implementation of CTR mode. And finally, the shell
+              script used to generate all of these results is shown in Figure \ref{fig:step1fa}.
+    \end{enumerate}
+\item \label{step2} Program RC4 using OpenSSL
+    \begin{enumerate}
+        \item Open rc4.h located in the openssl installation directory. There are two functions of interest in this
+              header file: RC4\textunderscore set\textunderscore key and RC4. The first function copies a plain string
+              into its own structure. The first parameter is a pointer to its structure, which is the return value of
+              this function. The second parameter is the length of the plain string key value. The third paramter is the
+              plain string key value.
+        \item Using this knowledge, it's easy to write RC4 encryption and decryption. See Figure \ref{fig:step2ba} for the
+              completed C code.  You may also refer to Figure \ref{fig:step2bb} to see the Makefile used to compile this code.
+              Finally, refer to Figure \ref{fig:step2bc} to see the output of the program.
     \end{enumerate}
 \end{enumerate}
 
@@ -258,20 +275,56 @@ $> xxd lab1_decrypted.txt
 \label{fig:step1fd}
 \end{figure}
 
+\begin{figure}
+\begin{mdframed}
+\lstinputlisting{../demoRC4.c}
+\end{mdframed}
+\caption{RC4 Encryption and Decryption Using OpenSSL.}
+\label{fig:step2ba}
+\end{figure}
+
+\begin{figure}
+\begin{mdframed}
+\lstinputlisting{../Makefile}
+\end{mdframed}
+\caption{Makefile for RC4 Encryption and Decryption.}
+\label{fig:step2bb}
+\end{figure}
+
+\begin{figure}
+\begin{mdframed}
+\begin{lstlisting}
+$> ./demoRC4
+The plaintext is: At the end of the experiment, you will be baked.
+The ciphertext (in hex) is: 2b44 bebe 4680 5158 dcc4 76f4 d51e 3e3c 4ee7 babd 45af 88bb 9427 b4ff e449 fc84 a8b6 5c2e d79a cc5f acad 4129 f672 51c
+The decrypted plaintext is: At the end of the experiment, you will be baked.
+\end{lstlisting}
+\end{mdframed}
+\caption{Makefile for RC4 Encryption and Decryption.}
+\label{fig:step2bc}
+\end{figure}
+
 %----------------------------------------------------------------------------------------
 %	SECTION 4
 %----------------------------------------------------------------------------------------
 
 \section{Conclusions}
 
-The atomic weight of magnesium is concluded to be \SI{24}{\gram\per\mol}, as determined by the stoichiometry of its chemical combination with oxygen. This result is in agreement with the accepted value.
+In the first part of this experiment, AES encryption and decryption is conducted. First, a small text file is created and it is then
+encrypted with CBC mode using the base64 encoding option. CBC mode was chosen because it's a general-purpose, block-oriented use case.
+The file isn't being transmitted over a channel where a stream-oriented mode like CFB or OFB would be more useful, and we have no
+high-speed requirements like CTR has to offer. It's also more secure than ECB. We use base64 encoding to encode the ASCII values in the
+text file to Base64 representation.
 
-%----------------------------------------------------------------------------------------
-%	SECTION 5
-%----------------------------------------------------------------------------------------
+In the second part of this experiment, the RC4 cryptographic algorithm is implemented using OpenSSL libraries. The implementation is very
+straightforward, with a hard-coded key and a hard-coded plaintext. First, the key is constructed, then encryption is executed producing the
+ciphertext, then the ciphertext is decrypted, and finally the original plaintext and the decrypted plaintext are compared and showed to be
+equal.
 
-\section{Code Listings}
-
-Insert code here.
+AES and RC4 are both useful for different applications. AES is a block-oriented, symmetric encryption cipher, while RC4 is a
+stream-oriented, asymmetric encryption cipher. AES is relatively new and complex while RC4 is older and very simple. AES may be used in
+several different modes, some of which enable it to emulate the stream-oriented nature of RC4. AES also uses a fixed key while RC4 uses a
+keystream of pseudorandom bits. Finally, AES is considered to be cryptographically strong while RC4 is considered to be weak. In fact, the
+WEP security algorithm utilizes the RC4 cipher for confidentiality and has since been deprecated due to known weaknesses in RC4.
 
 \end{document}

@@ -6,6 +6,8 @@
 
 #define BUFFER_SIZE 8192
 
+void print_ciphertext_in_hex(unsigned char *str);
+
 int main(void)
 {
     //define plaintext variable
@@ -33,8 +35,8 @@ int main(void)
     printf("The plaintext is: %s\n", plaintext);
 
     // print out your ciphertext
-    printf("The ciphertext is: %s\n", ciphertext);
-
+    //printf("The ciphertext is: %x\n", ciphertext);
+    print_ciphertext_in_hex(ciphertext);
 
     // RC4 key setup
     RC4_set_key(&rc4_key, strlen(key), key);
@@ -47,3 +49,16 @@ int main(void)
     exit(1);
 }
 
+void print_ciphertext_in_hex(unsigned char *str) {
+    int i, n;
+
+    printf("The ciphertext (in hex) is:");
+    n = strlen(str);
+    for (i = 0; i < n; ++i) {
+        if ((i % 2) == 0) {
+            printf(" ");
+        }
+        printf("%x", (unsigned int) str[i]);
+    }
+    printf("\n");
+}
