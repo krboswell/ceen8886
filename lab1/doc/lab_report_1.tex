@@ -315,12 +315,12 @@ encrypted with CBC mode using the base64 encoding option. CBC mode was chosen be
 The file isn't being transmitted over a channel where a stream-oriented mode like CFB or OFB would be more useful, and we have no
 high-speed requirements like CTR has to offer. It's also more secure than ECB. We use base64 encoding to encode the ASCII values in the
 text file to Base64 representation.
-
+\\[12pt]
 In the second part of this experiment, the RC4 cryptographic algorithm is implemented using OpenSSL libraries. The implementation is very
 straightforward, with a hard-coded key and a hard-coded plaintext. First, the key is constructed, then encryption is executed producing the
 ciphertext, then the ciphertext is decrypted, and finally the original plaintext and the decrypted plaintext are compared and showed to be
 equal.
-
+\\[12pt]
 AES and RC4 are both useful for different applications. AES is a block-oriented, symmetric encryption cipher, while RC4 is a
 stream-oriented, asymmetric encryption cipher. AES is relatively new and complex while RC4 is older and very simple. AES may be used in
 several different modes, some of which enable it to emulate the stream-oriented nature of RC4. AES also uses a fixed key while RC4 uses a
