@@ -30,6 +30,7 @@
 \usepackage{mdframed}
 \usepackage{listings}
 \usepackage{enumitem}
+\usepackage{hyperref}
 
 \lstset{ %
 language=C,                    % choose the language of the code
@@ -322,9 +323,10 @@ ciphertext, then the ciphertext is decrypted, and finally the original plaintext
 equal.
 \\[12pt]
 AES and RC4 are both useful for different applications. AES is a block-oriented, symmetric encryption cipher, while RC4 is a
-stream-oriented, asymmetric encryption cipher. AES is relatively new and complex while RC4 is older and very simple. AES may be used in
+stream-oriented, symmetric encryption cipher. AES is relatively new and complex while RC4 is older and very simple. AES may be used in
 several different modes, some of which enable it to emulate the stream-oriented nature of RC4. AES also uses a fixed key while RC4 uses a
 keystream of pseudorandom bits. Finally, AES is considered to be cryptographically strong while RC4 is considered to be weak. In fact, the
-WEP security algorithm utilizes the RC4 cipher for confidentiality and has since been deprecated due to known weaknesses in RC4.
+WEP security algorithm utilizes the RC4 cipher for confidentiality and has since been deprecated due to known weaknesses in
+RC4\footnote{See \url{https://tools.ietf.org/html/rfc7465} for details.}.
 
 \end{document}
