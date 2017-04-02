@@ -119,9 +119,52 @@ networks to harvest information from mobile phones, illustrate the following que
 
 \subsection{How would this machine perform a man-in-the-middle attack?}
 
+An IMSI catcher can perform a man-in-the-middle attack by presenting itself as a preferred base
+station to the mobile station by having a stronger signal than valid base stations in the network.
+Then, as long as it has a SIM, it may simultaneously log into the network as a mobile station.
+
 \subsection{Which GSM cellular system components are vulnerable to such an attack?}
 
+Since the mobile station doesn't authenticate the network, the mobile station is vulnerable to
+a man-in-the-middle attack if, say, an attacker uses something like an IMSI catcher to impersonate
+a BTS. A BTS is also vulnerable if an attacker is able to acquire a SIM card that can authenticate
+with the network.
+
 \subsection{Design your own scheme to achieve the base station authentication.}
+
+Actually, UMTS has already solved the mobile station and base station mutual autentication problem.
+Figures \ref{fig:prob2c1}, \ref{fig:prob2c2}, and \ref{fig:prob2c3} depict the protocol. The steps are:
+
+\begin{itemize}
+\item The subscriber can authenticate the network by the secret key K using f1(K, SQN, AMF, RAND).
+\item The SQN is introduced to prevent replay attacks.
+\item The AK is used to conceal the SQN.
+\item The Cipher Key and Integrity Key are generated after the authentication (Key Agreement).
+\end{itemize}
+
+\begin{figure}
+\begin{mdframed}
+\includegraphics[scale=0.2]{UMTS_Authentication_Protocol.png}
+\caption{UMTS Authentication}
+\label{fig:prob2c1}
+\end{mdframed}
+\end{figure}
+
+\begin{figure}
+\begin{mdframed}
+\includegraphics[scale=0.2]{Generation_of_Authentication_Vector.png}
+\caption{Generation of Authentication Vector}
+\label{fig:prob2c2}
+\end{mdframed}
+\end{figure}
+
+\begin{figure}
+\begin{mdframed}
+\includegraphics[scale=0.2]{Verification_of_Mobile_Station.png}
+\caption{Verification of Mobile Station}
+\label{fig:prob2c3}
+\end{mdframed}
+\end{figure}
 
 %Problem 3
 \section{Problem 3 --- Attacks on authentication protocols in GSM Security}
@@ -131,7 +174,11 @@ Alice is using GSM cellular network to communicate with her friends.
 \subsection{Is it possible for Eve, the attacker, to authenticate herself to the network as the
       legitimate subscriber?}
 
+Yes.
+
 \subsection{Is it possible for the attacker to decrypt all the calls from and to the subscriber?}
+
+Yes.
 
 \subsection{Consider the cases in Problem 3.a and 3.b, how would the attacker successfully
       achieve these goals in \textbf{reality}? (What approaches can the attacker do physically?)}
