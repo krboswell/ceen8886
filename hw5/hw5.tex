@@ -183,4 +183,14 @@ Yes.
 \subsection{Consider the cases in Problem 3.a and 3.b, how would the attacker successfully
       achieve these goals in \textbf{reality}? (What approaches can the attacker do physically?)}
 
+In Problem 3.a, Eve could clone a legitimate user's SIM card. This is difficult to achieve, however,
+because SIM cards are carefully designed to be tamper resistant so some sophisticated hardware is
+required to extract the subscriber's information from it. It's also easy for the GSM network to identify
+cloned SIM cards when they are in different geographic locations.
+
+In problem 3.b, Eve could capture phone calls and crack them offline using some relatively cheap hardware
+called Universal Software Radio Peripheral (USRP) that you can order online and freely available software
+called GNURadio. Then, to crack the user's key you can use a program like
+Kraken\footnote{http://www.h-online.com/security/news/item/Quickly-decrypting-cell-phone-calls-1048850.html}.
+
 \end{document}
