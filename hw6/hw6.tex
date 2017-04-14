@@ -8,6 +8,15 @@
 \date{2017-04-19}
 \author{Kelly Boswell}
 
+\makeatletter
+\DeclareRobustCommand{\textsupsub}[2]{{%
+  \m@th\ensuremath{%
+    ^{\mbox{\fontsize\sf@size\z@#1}}%
+    _{\mbox{\fontsize\sf@size\z@#2}}%
+  }%
+}}
+\makeatother
+
 \begin{document}
 
 \maketitle
@@ -72,6 +81,53 @@ interface to external networks.
 
 \subsection{Illustrate the improvements of LTE security over UMTS security.
             Give detailed explanations.}
+
+\begin{enumerate}
+\item Network Access Security
+    \begin{enumerate}
+    \item Serving network identity (SN ID) has been added to the EPS AKA procedure to avoid attacks 
+             such as redirection attacks and false base station attacks.
+    \item On top of the security functions at the access stratum (AS) level between the User Equipment
+             (UE) and the eNB, new security functions at the non access stratum (NAS) level between the 
+             UE and the Mobility Management Entity (MME) have been included.
+    \item The new root key K\textsubscript{ASME}, computed by the Home Server Subscriber (HSS), will be delivered
+             to the Mobility Management Entity (MME) or the serving network (SN).
+    \item The key set identifier KSI\textsubscript{ASME} is embedded in the user authentication request message
+             transmitted to the UE by the MME.
+    \item A new key heirarchy is introduced to protect the security of the signaling and user data traffic.
+    \end{enumerate}
+\item Security in Handover Processes
+    \begin{enumerate}
+    \item Intra E-UTRAN mobility: The current eNB and the target eNB are managed by the same MME
+        \begin{enumerate}
+        \item A new key management mechanism is designed with different ways to derive the new eNB keys
+                 based on vertical or horizontal key derivations.
+        \item A MME and the UE shall derive a K\textsubscript{eNB} and a next hop (NH) parameter from the K\textsubscript{ASME},
+                 which is derived by the UE and the MME after an initial access authentication.
+        \item In the initial setup, K\textsubscript{eNB} is derived directly from the K\textsubscript{ASME}, and is then associated with a
+                 virtual NH parameter with a NH chaining counter (NCC)  value to be zero. The UE and the eNB
+                 use the K\textsubscript{eNB} to secure the communication on the air interface.
+        \item In handovers, a new session key used between the UE and the target eNB, K\textsupsub{*}{eNB},
+                 is derived from either the active K\textsubscript{eNB} or from the NH parameter.
+        \end{enumerate}
+    \item Mobility between the E-UTRAN and UTRAN/GERAN
+        \begin{enumerate}
+        \item For the handover from the E-UTRAN to the UMTS Terrestrial Radio Access Network (UTRAN) or the
+                 GSM EDGE Radio Access Network (GERAN):
+            \begin{enumerate}
+            \item the UE and the MME shall first derive a CK and IK from the K\textsubscript{ASME}
+            \item upon receiving CK' || IK' with KSI' from the MME, the target Service GPRS Supporting Node (SGSN) and
+                     the UE shall replace all stored parameters CK, IK, KSI, with CK', IK', and KSI'.
+            \item the UE and the target SGSN shall use CK' and IK' to derive the General Packet Radio Service (GPRS)
+                     K\textsubscript{c}.
+            \end{enumerate}
+        \end{enumerate}
+    \item Mobility between E-UTRAN and non-3GPP access networks
+        \begin{enumerate}
+        \item foo
+        \end{enumerate}
+    \end{enumerate}
+\end{enumerate}
 
 %Problem 3
 \section{Problem 3 --- IEEE 802.15 for WPAN Security}
