@@ -247,16 +247,22 @@ interface to external networks.
 %Problem 3
 \section{Problem 3 --- IEEE 802.15 for WPAN Security}
 
-Alice is using GSM cellular network to communicate with her friends.
-
 \subsection{What is the hopping rate in Bluetooth and how many bits are
             transmitted in one slot transmission?}
 
+The hopping rate in bluetooth is 1,600 hops per second. However, with adaptive frequency hopping
+the rate may be reduced by 50\% or 800 hops per second.  The number of bits transmitted in a single
+slot transmission may vary per packet type. Each time slot carries 240 bits of data. 
 
 \subsection{Which 802.11 LAN standards will Bluetooth interfere with?}
 
+Bluetooth devices may interfere with any 802.11 standard that is in the same frequency band of 2.4-GHz, namely 802.11 b/g/n.
+Current versions use adaptive frequency hopping to mitigate interference, however.
 
 \subsection{What is the reason for a lower speed/lower power WPAN standard
             such as IEEE 802.15.4?}
+
+To support internetworking of low-power embedded devices, such as wireless sensor devices that are becoming ubiquitous
+in the IoT consumer market.
 
 \end{document}
