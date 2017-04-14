@@ -121,10 +121,25 @@ interface to external networks.
             \item the UE and the target SGSN shall use CK' and IK' to derive the General Packet Radio Service (GPRS)
                      K\textsubscript{c}.
             \end{enumerate}
+        \item For the handover from the UTRAN/GERAN to the E-UTRAN:
+            \begin{enumerate}
+            \item The target MME shall derive K\textsupsub{'}{ASME} from CK and IK or GPRS K\textsubscript{c} received
+                     from the SGSN.
+            \item The UE shall also execute the above same procedure as the MME to derive K\textsupsub{'}{ASME}.
+            \item The target MME and the UE shall derive K\textsubscript{eNB} and the corresponding NAS keys according
+                     to the key heirarchy of LTE. 
+            \end{enumerate}
         \end{enumerate}
     \item Mobility between E-UTRAN and non-3GPP access networks
         \begin{enumerate}
-        \item foo
+        \item There are several different mobility scenarios between heterogeneous access systems in the LTE networks:
+            \begin{enumerate}
+            \item Handovers from trusted or untrusted non-3GPP access networks to the E-UTRAN
+            \item Handovers from the E-UTRAN to trusted or untrusted non-3GPP access networks
+            \end{enumerate}
+        \item The UE, the target access network and the EPC will implement a full access authentication procedure before
+                 the UE handovers to the new access network.
+        \item Different access authentication procedures will be executed in distinct mobility scenarios.
         \end{enumerate}
     \end{enumerate}
 \end{enumerate}
