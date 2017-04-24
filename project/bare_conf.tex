@@ -51,7 +51,11 @@
 
 
 
-\documentclass[conference]{IEEEtran}
+\documentclass[10pt,conference]{IEEEtran}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{mdframed}
+\usepackage{grffile}
 % Some Computer Society conferences also require the compsoc mode option,
 % but others use the standard conference format.
 %
@@ -92,7 +96,7 @@
 
 % *** CITATION PACKAGES ***
 %
-%\usepackage{cite}
+\usepackage{cite}
 % cite.sty was written by Donald Arseneau
 % V1.6 and later of IEEEtran pre-defines the format of the cite.sty package
 % \cite{} output to follow that of the IEEE. Loading the cite package will
@@ -307,6 +311,12 @@
 % (Unless specifically asked to do so by the journal or conference you plan
 % to submit to, of course. )
 
+\lstset{
+language=C,                    % choose the language of the code
+basicstyle=\footnotesize,         % the size of the fonts that are used for the line-numbers
+breaklines=true,
+postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{red}\hookrightarrow\space}}
+}
 
 % correct bad hyphenation here
 \hyphenation{op-tical net-works semi-conduc-tor}
@@ -320,28 +330,17 @@
 % not capitalized unless they are the first or last word of the title.
 % Linebreaks \\ can be used within to get better formatting as desired.
 % Do not put math or special symbols in the title.
-\title{Bare Demo of IEEEtran.cls\\ for IEEE Conferences}
+\title{CEEN 8886 Course Project\\ Network Security Evaluation}
 
 
 % author names and affiliations
 % use a multiple column layout for up to three different
 % affiliations
-\author{\IEEEauthorblockN{Michael Shell}
+\author{\IEEEauthorblockN{Kelly Boswell}
 \IEEEauthorblockA{School of Electrical and\\Computer Engineering\\
-Georgia Institute of Technology\\
-Atlanta, Georgia 30332--0250\\
-Email: http://www.michaelshell.org/contact.html}
-\and
-\IEEEauthorblockN{Homer Simpson}
-\IEEEauthorblockA{Twentieth Century Fox\\
-Springfield, USA\\
-Email: homer@thesimpsons.com}
-\and
-\IEEEauthorblockN{James Kirk\\ and Montgomery Scott}
-\IEEEauthorblockA{Starfleet Academy\\
-San Francisco, California 96678--2391\\
-Telephone: (800) 555--1212\\
-Fax: (888) 555--1212}}
+University of Nebraska --- Lincoln\\
+Lincoln, NE 68588\\
+Email: krboswell@gmail.com}}
 
 % conference papers do not typically use \thanks and this command
 % is locked out in conference mode. If really needed, such as for
@@ -380,11 +379,15 @@ Fax: (888) 555--1212}}
 % As a general rule, do not put math, special symbols or citations
 % in the abstract
 \begin{abstract}
-The abstract goes here.
+The purpose of this project is to learn how to use some networking tools for network security assessment. There
+are two parts to this project. In the first part, the EICAR virus is used to to test a number of scenarios for distributing
+viruses through email. In the second part, security of SSL/TLS over HTTP is evaluated.
 \end{abstract}
 
 % no keywords
-
+\begin{IEEEkeywords}
+Network security, Wireshark, email, virus, anti-virus, EICAR, SMTP, POP, HTTP, SSL, TLS
+\end{IEEEkeywords}
 
 
 
@@ -402,24 +405,12 @@ The abstract goes here.
 
 \section{Introduction}
 % no \IEEEPARstart
-This demo file is intended to serve as a ``starter file''
-for IEEE conference papers produced under \LaTeX\ using
-IEEEtran.cls version 1.8b and later.
-% You must have at least 2 lines in the paragraph with the drop letter
-% (should never be an issue)
-I wish you the best of success.
-
-\hfill mds
- 
-\hfill August 26, 2015
-
-\subsection{Subsection Heading Here}
-Subsection text here.
-
-
-\subsubsection{Subsubsection Heading Here}
-Subsubsection text here.
-
+The purpose of this project is to learn how to use some networking tools for network security assessment. First, the basic setup
+of the project is discussed. Next, the EICAR virus is used to to test a number of scenarios for distributing
+viruses through email. Anti-virus software\footnote{The anti-virus software used throughout this project is Symantec Endpoint Protection.}
+is used to test the effectiveness of the software when distributing the virus
+via different fields in the SMTP protocol.  Some of the protocols explored in this part are SMTP, POP, and MIME. Lastly,
+security of SSL/TLS over HTTP is evaluated. Some of the protocols explored in this part are SSL/TLS, and HTTP.
 
 % An example of a floating figure using the graphicx package.
 % Note that \label must occur AFTER (or within) \caption.
@@ -518,20 +509,159 @@ Subsubsection text here.
 
 
 
+\section{Setup}
+The test apparatus consists of two virtual machines: one used as an email and HTTP
+server and the other used as the email and HTTP client.  The server platform consists of the
+CentOS 7 operating system using postfix for basic SMTP service, dovecot for IMAP/POP3
+service, and httpd for HTTP service. The client platform consists of the Windows 7 operating
+system, the Thunderbird email client, and the Internet Explorer web browser. Both platforms
+use Symantec Endpoint Protection for anti-virus service.
+
+On the server node, postfix, dovecot, and httpd may be installed via the yum repositories. It may
+be necessary to remove sendmail, first. The server is given a static IP address on a private network
+by modifying the appropriate interface script in $/etc/sysconfig/network-scripts$ and its fully-qualified
+hostname is set to $mail01.acme.com$. To simplify the experiment, SELINUX and the firewall are 
+disabled. Then, some postfix and dovecot configuration files must be updated\cite{centos:email:sk} 
+in order for the programs to interoperate correctly and to make the service accessible to local clients.
+Lastly, a private key and a public key must be created and the httpd configurations must be updated to 
+reference them in order to serve HTTP over SSL/TLS\cite{centos:http:cg}.
+
+On the client node, Thunderbird\cite{windows:thunderbird} and Wireshark\cite{windows:wireshark} may
+be downloaded and installed from their host websites.
+And, source code for netcat for Windows\cite{windows:netcat:jc} must be downloaded and compiled
+with MinGW\cite{windows:mingw} C compilers.
+
+\section{Email Service Security Evaluation}
+The EICAR virus\cite{windows:eicar} test string is used in a number of SMTP
+and MIME fields to test the dependability of anti-virus software on both the server and host platforms.
+The test scenarios include: inserting the string into the message body\ref{fig:body}; inserting the string into the subject\ref{fig:subject};
+inserting the string into an HTML table\ref{fig:html}; inserting the string into the comments\ref{fig:comments};  inserting the string into the
+keywords\ref{fig:keywords}; inserting the string into the references\ref{fig:references}; inserting the test string in a text file attachment\ref{fig:attachment}.
+The messages were retrieved both via a netcat script with a POP retrieval messages and via the Thunderbird mail client.
+In each case, only the emails with the test string in the message body and with the test string an an attached file triggered
+alerts from the anti-virus program.
+
+Wireshark is also used to monitor network traffic on the client while the message with the attachment\ref{fig:attachment} is retrieved. There is no discernable
+difference between the retrieved message using netcat and the retrieved message using the Thunderbird client except that different session ID's 
+are used for postfix and a different Message-Id is used for each.
+
+Surprisingly, some of the other tests didn't trigger alerts. This may be because
+the anti-virus program doesn't look in these fields for potential virus strings or that virus strings are simply innocuous in them.
+In the case of the HTML table, it's likely that the test virus string is innocuous when inserted into an HTML body as it is.
+
+\begin{figure}
+\begin{mdframed}
+\lstinputlisting{smtp/smtp-mime-body.nc}
+\caption{Inserting EICAR string to the message body.}
+\label{fig:body}
+\end{mdframed}
+\end{figure}
+
+\begin{figure}
+\begin{mdframed}
+\lstinputlisting{smtp/smtp-mime-subject.nc}
+\caption{Inserting EICAR string to the subject}
+\label{fig:subject}
+\end{mdframed}
+\end{figure}
+
+\begin{figure}
+\begin{mdframed}
+\lstinputlisting{smtp/smtp-mime-comments.nc}
+\caption{Inserting EICAR string to the comments.}
+\label{fig:comments}
+\end{mdframed}
+\end{figure}
+
+\begin{figure}
+\begin{mdframed}
+\lstinputlisting{smtp/smtp-mime-keywords.nc}
+\caption{Inserting EICAR string to the keywords.}
+\label{fig:keywords}
+\end{mdframed}
+\end{figure}
+
+\begin{figure}
+\begin{mdframed}
+\lstinputlisting{smtp/smtp-mime-references.nc}
+\caption{Inserting EICAR string to the references.}
+\label{fig:references}
+\end{mdframed}
+\end{figure}
+
+\begin{figure}
+\begin{mdframed}
+\lstinputlisting{smtp/smtp-mime-html.nc}
+\caption{Inserting EICAR string in HTML table.}
+\label{fig:html}
+\end{mdframed}
+\end{figure}
+
+\begin{figure}
+\begin{mdframed}
+\lstinputlisting{smtp/smtp-mime.nc}
+\caption{Inserting EICAR string file as an attachment.}
+\label{fig:attachment}
+\end{mdframed}
+\end{figure}
+
+\section{HTTP Service Security Evaluation}
+The EICAR virus test string is copied into a number of files with different suffixes: eicar.com, 
+eicar.txt, eicar.html, and eicar.gif. These files are then copied into the web content folder so
+that they may be retrieved over HTTP and HTTPS. When doing so, the server's anti-virus 
+program generates an alert until the web content directory is whitelisted. From the client, the files may be retrieved
+using netcat or a web browser.  Either way, an alert is generated on the client in all cases, despite
+the file suffix.  This is an expected outcome.
+
+The process is repeated but this time over HTTPS so the communication is secured with SSL/TLS.
+Wireshark's SSL decryption capability is used here to simplify the process of decrypting all of
+the captured network traffic on the client. In order to do so, it is imperative that RSA is used
+as the encryption scheme on the server. On CentOS 7, it may be necessary to modify the httpd configuration
+file $ssl.conf$'s $SSLCipherSuite$ configuration value to $RSA+AESGCM:RSA+AES:RSA+3DES:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS$.
+Otherwise, httpd on CentOS 7 seems to prefer Diffie-Hellman over RSA even if an RSA private and public
+key are generated and configured for use. Then, the private key used by the HTTP server must be copied 
+to the client and Wireshark must be configured so that the SSL protocol will decrypt HTTP traffic with it.
+
+If the private key is accessible, then it is possible to capture and decrypt all network traffic, including the entire key exchange protocol.
+The HTTP traffic may include the server's operating system and web server application and version number. So, not only
+is privacy for web traffic for that server compromised, but some critical information may be leaked to nefarious parties, 
+assuming encryption is intended to keep such information private.
+
+\begin{figure}
+\begin{mdframed}
+\lstinputlisting{http/http.nc}
+\caption{Retrieving content from the web server using netcat.}
+\label{fig:attachment}
+\end{mdframed}
+\end{figure}
+
 \section{Conclusion}
-The conclusion goes here.
+This project explores some applications commonly used in a networked environment and the security issues
+surrounding them. First, an email server using the SMTP/MIME and POP protocols are used to deliver a test virus between
+a client and server to test the anti-virus software's ability to detect it. While doing so, it was discovered that the software
+wasn't able to detect the virus it's embedded in some of the SMTP/MIME fields but it's possible that the test virus string 
+is innocuous when it's embedded in those fields. It may also be that the anti-virus scanner doesn't look at those fields
+and it is a potential vulnerability. This shows how easily viruses may spread via email.
 
+Next, the potential for delivering the same virus via an HTTP service is evaluated. If the virus is somehow
+placed in a file on the web server, it could be distributed to any clients unlucky enough to view it. It could also be that the
+website is hosted by a nefarious party intent on distributing the virus. It was discovered that the anti-virus software was
+able to detect the test virus despite the file suffix in all cases, however. Even still, this finding shows how easily viruses
+may be distributed over the world wide web.  
 
-
+Lastly, the security of SSL/TLS on HTTP is evaluated. Wireshark was used to decrypt an entire SSL/TLS session but only
+when the server's private key was known to the client using Wireshark and that's only possible if an insider accidentally
+or purposefully leaks the server's private key or if the server is penetrated by a nefarious party. Otherwise, SSL/TLS provides adequate privacy
+for clients using the server.  
 
 % conference papers do not normally have an appendix
 
 
 % use section* for acknowledgment
-\section*{Acknowledgment}
+%\section*{Acknowledgment}
 
 
-The authors would like to thank...
+%The authors would like to thank...
 
 
 
@@ -559,15 +689,37 @@ The authors would like to thank...
 % <OR> manually copy in the resultant .bbl file
 % set second argument of \begin to the number of references
 % (used to reserve space for the reference number labels box)
-\begin{thebibliography}{1}
+\begin{thebibliography}{6}
 
-\bibitem{IEEEhowto:kopka}
-H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
-  0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
+\bibitem{centos:email:sk}
+Senthil Kumar.  (2016) \emph{Set Up a Local Mail Server in CentOS 7} [Online].
+  Available: https://www.unixmen.com/setup-a-local-mail-server-in-centos-7/
+  
+\bibitem{centos:http:cg}
+Christoph Galuschka.  (2014) \emph{Setting up an SSL secured Webserver with CentOS} [Online].
+  Available: https://wiki.centos.org/HowTos/Https
+
+\bibitem{windows:netcat:jc}
+Jon Craton.  (2009) \emph{Netcat for Windows} [Online].
+  Available: https://joncraton.org/blog/46/netcat-for-windows/
+
+\bibitem{windows:thunderbird}
+(2017) \emph{Thunderbird} [Online].
+  Available: https://www.mozilla.org/en-US/thunderbird/
+
+\bibitem{windows:wireshark}
+(2017) \emph{Wireshark} [Online].
+  Available: https://www.wireshark.org/
+
+\bibitem{windows:mingw}
+(2017) \emph{MinGW --- Minimalist GNU for Windows} [Online].
+  Available: http://www.mingw.org/
+
+\bibitem{windows:eicar}
+(2017) \emph{Anti-Malware Test File --- Intended Use} [Online].
+  Available: http://www.eicar.org/86-0-Intended-use.html
 
 \end{thebibliography}
-
-
 
 
 % that's all folks
