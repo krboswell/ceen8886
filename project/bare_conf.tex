@@ -540,14 +540,16 @@ with MinGW\cite{windows:mingw} C compilers.
 \section{Email Service Security Evaluation}
 The EICAR virus\cite{windows:eicar} test string is used in a number of SMTP
 and MIME fields to test the dependability of anti-virus software on both the server and host platforms.
-The test scenarios include: inserting the string into the message body\ref{fig:body}; inserting the string into the subject\ref{fig:subject};
-inserting the string into an HTML table\ref{fig:html}; inserting the string into the comments\ref{fig:comments};  inserting the string into the
-keywords\ref{fig:keywords}; inserting the string into the references\ref{fig:references}; inserting the test string in a text file attachment\ref{fig:attachment}.
+The test scenarios include: inserting the string into the message body (Figure \ref{fig:body}); inserting the string into the subject
+(Figure \ref{fig:subject});
+inserting the string into an HTML table (Figure \ref{fig:html}); inserting the string into the comments (Figure \ref{fig:comments});  inserting the string into the
+keywords (Figure \ref{fig:keywords}); inserting the string into the references (Figure \ref{fig:references}); inserting the test string in a text file attachment
+(Figure \ref{fig:attachment}).
 The messages were retrieved both via a netcat script with a POP retrieval messages and via the Thunderbird mail client.
 In each case, only the emails with the test string in the message body and with the test string an an attached file triggered
 alerts from the anti-virus program.
 
-Wireshark is also used to monitor network traffic on the client while the message with the attachment\ref{fig:attachment} is retrieved. There is no discernable
+Wireshark is also used to monitor network traffic on the client while the message with the attachment (Figure \ref{fig:attachment}) is retrieved. There is no discernable
 difference between the retrieved message using netcat and the retrieved message using the Thunderbird client except that different session ID's 
 are used for postfix and a different Message-Id is used for each.
 
@@ -616,7 +618,7 @@ The EICAR virus test string is copied into a number of files with different suff
 eicar.txt, eicar.html, and eicar.gif. These files are then copied into the web content folder so
 that they may be retrieved over HTTP and HTTPS. When doing so, the server's anti-virus 
 program generates an alert until the web content directory is whitelisted. From the client, the files may be retrieved
-using netcat or a web browser.  Either way, an alert is generated on the client in all cases, despite
+using netcat (Figure \ref{fig:httpnetcat}) or a web browser.  Either way, an alert is generated on the client in all cases, despite
 the file suffix.  This is an expected outcome.
 
 The process is repeated but this time over HTTPS so the communication is secured with SSL/TLS.
@@ -637,7 +639,7 @@ assuming encryption is intended to keep such information private.
 \begin{mdframed}
 \lstinputlisting{http/http.nc}
 \caption{Retrieving content from the web server using netcat.}
-\label{fig:attachment}
+\label{fig:httpnetcat}
 \end{mdframed}
 \end{figure}
 
