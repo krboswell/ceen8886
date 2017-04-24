@@ -381,7 +381,13 @@ Email: krboswell@gmail.com}}
 \begin{abstract}
 The purpose of this project is to learn how to use some networking tools for network security assessment. There
 are two parts to this project. In the first part, the EICAR virus is used to to test a number of scenarios for distributing
-viruses through email. In the second part, security of SSL/TLS over HTTP is evaluated.
+viruses through email. In this part, it is found that viruses are spread very easily via the SMTP/MIME and POP protocols and that
+the anti-virus software is either ineffective in certain scenarios or that the anti-virus software doesn't scan certain fields
+because plaintext viruses are known to be innocuous in those fields. In the second part, security of SSL/TLS over HTTP is evaluated.
+In this part of the project, it is again found that viruses spread very easily via HTTP assuming that a website is hosting viruses
+either intentionally or unintentionally. In all scenarios tested, the anti-virus software detects the virus. It is also found that
+SSL/TLS provides adequate privacy for HTTP session unless the server's private key is compromised. Then a network packet capture
+with Wireshark reveals all contents just as if it were a non-secure session. 
 \end{abstract}
 
 % no keywords
