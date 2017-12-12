@@ -1,14 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
 
 #define P_SIZE 8
-#define K_SIZE 7
+#define K_SIZE 8
 
 typedef unsigned int value_t;
 
-int parse_key(char *arg, value_t *key);
-int parse_plaintext(char *arg, value_t *plaintext);
+size_t parse_key(char *arg, value_t *key);
+size_t parse_plaintext(char *arg, value_t *plaintext);
 void print_arr(value_t *key, const char *pfx, int n);
 void do_rc4(value_t *key, value_t *plaintext, value_t *ciphertext);
 void swap(value_t *a, value_t *b);
@@ -109,6 +110,7 @@ static void key_schedule(value_t *state, value_t *key) {
         j = (j + state[i] + T[i]) % P_SIZE;
         swap(&state[i], &state[j]);
     }
+    print_arr(state, "Initial permutation", P_SIZE);
 }
 
 static void stream_gen(value_t *state, value_t *psga_out) {

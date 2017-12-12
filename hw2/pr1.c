@@ -19,6 +19,7 @@ void sub_bytes(unsigned int *state);
 unsigned int sub_byte(unsigned char byte);
 unsigned int rot_word(unsigned int w);
 void shift_rows(unsigned int *state);
+void mix_columns(unsigned int *state);
 
 void add_round_key(unsigned int *state, unsigned int *w);
 void print_state(unsigned int *state);
@@ -75,6 +76,11 @@ int main(int argc, char **argv) {
 
         shift_rows(state);
         printf("State after ShiftRows:\n");
+        print_state(state);
+        printf("\n");
+
+        mix_columns(state);
+        printf("State after MixColumns:\n");
         print_state(state);
         printf("\n");
     }
@@ -217,6 +223,48 @@ void shift_rows(unsigned int *state) {
     bytes[7] = tmp;
     bytes[11] = tmp2;
     bytes[15] = tmp3;
+}
+
+static unsigned char gmul(unsigned char a, unsigned char b) {
+    unsigned char p;
+    unsigned char i;
+    unsigned char hi_bit_set;
+
+    p = 0;
+
+    for(i = 0; i < 8; i++) {
+        if((b & 1) == 1) {
+            p ^= a;
+        }
+        hi_bit_set = (a & 0x80);
+        a <<= 1;
+        if(hi_bit_set == 0x80) {
+            a ^= 0x1b;
+        }
+        b >>= 1;
+    }
+
+    return p;
+}
+
+static void gmix_column(unsigned char *r) {
+    unsigned char a[4];
+    unsigned char i;
+    for(i=0; i<4; ++i) {
+        a[i] = r[i];
+    }
+    r[0] = gmul(a[0], 2) ^ gmul(a[3], 1) ^ gmul(a[2], 1) ^ gmul(a[1], 3);
+    r[1] = gmul(a[1], 2) ^ gmul(a[0], 1) ^ gmul(a[3], 1) ^ gmul(a[2], 3);
+    r[2] = gmul(a[2], 2) ^ gmul(a[1], 1) ^ gmul(a[0], 1) ^ gmul(a[3], 3);
+    r[3] = gmul(a[3], 2) ^ gmul(a[2], 1) ^ gmul(a[1], 1) ^ gmul(a[0], 3);
+}
+
+void mix_columns(unsigned int *state) {
+    int i;
+
+    for (i = 0; i < 4; ++i) {
+        gmix_column((unsigned char *) (state + i));
+    }
 }
 
 void add_round_key(unsigned int *state, unsigned int *w) {
